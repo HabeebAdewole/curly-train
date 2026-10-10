@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #111614;
+  --ink-deep: #090b0a;
+  --paper: #eef0ed;
+  --paper-bright: #f7f8f5;
+  --line-light: rgba(255, 255, 255, .35);
+  --line-dark: #aeb7b0;
+  --muted-light: #bfc8c2;
+  --muted-dark: #65706a;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --font-sans: var(--font-dm-sans);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-dm-sans), Arial, sans-serif; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+a { text-decoration: none; }
+:is(a, button, input, select):focus-visible { outline: 2px solid #a3e7c1; outline-offset: 4px; }
+
+.wordmark { font-family: var(--font-manrope), Arial, sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -.11em; line-height: 1; padding-right: .14em; }
+.site-header { position: relative; z-index: 5; height: 94px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(24px, 5vw, 84px); }
+.site-header--dark { color: #f5f7f3; }
+.site-header--light { color: var(--ink); }
+.main-nav { display: flex; align-items: center; gap: clamp(20px, 3vw, 42px); margin-left: 6vw; font-size: 14px; font-weight: 600; }
+.main-nav a { opacity: .82; transition: opacity .2s; }
+.main-nav a:hover { opacity: 1; }
+.header-end { display: flex; align-items: center; gap: 24px; }
+.header-location { font-size: 13px; font-weight: 600; opacity: .82; }
+.pill { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 22px; border: 1px solid currentColor; border-radius: 999px; color: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; transition: background .2s, color .2s, transform .2s; }
+.pill:hover { transform: translateY(-1px); }
+.pill--outline { background: transparent; }
+.site-header--dark .pill--outline:hover, .hero-actions .pill--outline:hover, .closing-section .pill--outline:hover { background: #f0f2ef; color: #111; }
+.site-header--light .pill--outline:hover { background: var(--ink); color: var(--paper); }
+.pill--filled { background: #f1f3f0; color: var(--ink); border-color: #f1f3f0; }
+.pill--filled:hover { background: #d6ded8; border-color: #d6ded8; }
+
+.home-hero { position: relative; min-height: max(850px, 100svh); isolation: isolate; overflow: hidden; color: #f5f7f3; background: #050606; }
+.hero-photo, .hero-shade { position: absolute; z-index: -1; inset: 0; }
+.hero-photo { background: url('/media/hero-mercedes.jpg') center 48% / cover no-repeat; }
+.hero-shade { background: linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.54) 34%, rgba(0,0,0,.12) 75%), linear-gradient(180deg, rgba(0,0,0,.27) 0%, transparent 51%, rgba(0,0,0,.96) 94%); }
+.hero-message { position: relative; margin-left: clamp(24px, 5vw, 84px); margin-top: clamp(62px, 10vh, 130px); width: min(640px, 52vw); }
+.hero-message h1 { margin: 0 0 25px; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(54px, 6.4vw, 98px); font-weight: 600; line-height: .98; letter-spacing: -.078em; }
+.hero-message p { max-width: 400px; margin: 0 0 32px; font-size: 17px; line-height: 1.6; color: #d4dbd5; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+
+.search-form { position: absolute; left: clamp(24px, 5vw, 84px); right: clamp(24px, 5vw, 84px); bottom: 30px; color: #f3f6f2; }
+.search-caption { margin: 0 0 14px; color: var(--muted-light); font-size: 13px; }
+.search-fields { display: grid; grid-template-columns: 1.22fr 1fr 1fr auto; gap: clamp(14px, 2vw, 32px); align-items: end; padding-top: 21px; border-top: 1px solid var(--line-light); }
+.search-field { min-width: 0; }
+.search-field label { display: block; margin-bottom: 9px; color: var(--muted-light); font-size: 12px; }
+.search-field input, .search-field select { display: block; width: 100%; height: 43px; padding: 0 3px 11px 0; border: 0; border-bottom: 1px solid var(--line-light); border-radius: 0; outline: 0; background: transparent; color: #fff; color-scheme: dark; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(15px, 1.55vw, 21px); font-weight: 600; letter-spacing: -.04em; }
+.search-field select { appearance: none; padding-right: 28px; background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8"%3E%3Cpath d="m1 1 6 6 6-6" stroke="%23dddddd" fill="none"/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 7px center; }
+.search-field select option { background: #151a17; }
+.search-field input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .82; cursor: pointer; }
+.search-field input:focus, .search-field select:focus { border-color: #fff; }
+.search-submit { min-height: 53px; padding: 0 26px; border: 0; border-radius: 999px; background: #f1f3f0; color: var(--ink); font-size: 14px; font-weight: 700; white-space: nowrap; transition: background .2s, transform .2s; }
+.search-submit:hover { background: #d6ded8; transform: translateY(-1px); }
+.search-error { min-height: 18px; margin: 8px 0 0; color: #ffd0bf; font-size: 13px; }
+
+.brands-section { padding: clamp(76px, 8vw, 124px) clamp(24px, 5vw, 84px) clamp(90px, 9vw, 144px); background: var(--paper-bright); }
+.brands-intro { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 48px; }
+.brands-intro h2, .process-intro h2 { margin: 0; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(42px, 4.6vw, 72px); font-weight: 600; line-height: 1.04; letter-spacing: -.071em; }
+.brands-intro p { max-width: 280px; margin: 0; color: var(--muted-dark); font-size: 16px; line-height: 1.6; }
+.brand-mark-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 42px 20px; align-items: center; }
+.brand-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; gap: 16px; color: var(--ink); animation: showroom-in .45s both; }
+.brand-mark-image { position: relative; display: block; width: clamp(52px, 5.6vw, 82px); height: clamp(52px, 5.6vw, 82px); transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.brand-mark:hover .brand-mark-image { transform: translateY(-5px) scale(1.08); }
+.brand-mark-image img { object-fit: contain; }
+.brand-mark-name { color: #47534b; font-size: 13px; font-weight: 650; text-align: center; }
+.brand-more { margin-top: 56px; }
+.collection-section { padding: clamp(86px, 9vw, 138px) clamp(24px, 5vw, 84px); background: var(--paper); }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 54px; }
+.section-heading h2, .closing-section h2, .motion-copy h2, .cars-intro h1 { margin: 0; font-family: var(--font-manrope), Arial, sans-serif; font-weight: 600; line-height: 1.02; letter-spacing: -.072em; }
+.section-heading h2 { font-size: clamp(43px, 5vw, 76px); }
+.section-heading p { max-width: 350px; margin: 0; color: var(--muted-dark); font-size: 16px; line-height: 1.6; }
+.underlined-link { display: inline-flex; margin-top: 36px; padding-bottom: 7px; border-bottom: 1px solid currentColor; color: var(--ink); font-size: 14px; font-weight: 700; }
+.underlined-link:hover { opacity: .65; }
+.section-heading .underlined-link { margin-top: 19px; }
+.collection-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin: 0 0 32px; }
+.collection-filters { display: flex; flex-wrap: wrap; gap: 9px; }
+.collection-filter { min-height: 41px; padding: 8px 19px; border: 1px solid #b9c2ba; border-radius: 999px; background: transparent; color: #536058; font-size: 13px; font-weight: 700; transition: color .2s, background .2s, border-color .2s, transform .2s; }
+.collection-filter:hover { border-color: var(--ink); transform: translateY(-2px); }
+.collection-filter.is-active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.collection-count { color: #69756d; font-size: 13px; white-space: nowrap; }
+.collection-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 54px 23px; }
+.collection-car { min-width: 0; animation: showroom-in .45s both; }
+.collection-car-image { position: relative; display: block; width: 100%; aspect-ratio: 1.38; overflow: hidden; border-radius: 20px; background: #d7dcd7; }
+.collection-car-image img { object-fit: cover; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+.collection-car:hover .collection-car-image img { transform: scale(1.055); }
+.collection-image-tag { position: absolute; left: 14px; top: 14px; padding: 8px 12px; border-radius: 999px; background: rgba(246,248,244,.93); color: #1e2922; font-size: 11px; font-weight: 750; backdrop-filter: blur(10px); }
+.collection-car-copy { display: flex; align-items: end; justify-content: space-between; gap: 16px; padding: 18px 3px 0; }
+.collection-car-copy span { color: #68766c; font-size: 12px; font-weight: 700; }
+.collection-car-copy h3 { margin: 5px 0 0; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(21px, 2.2vw, 30px); font-weight: 650; letter-spacing: -.055em; line-height: 1.12; }
+.collection-car-link { flex: 0 0 auto; padding: 0 0 5px; border-bottom: 1px solid currentColor; color: var(--ink); font-size: 13px; font-weight: 750; }
+.collection-car-link:hover { opacity: .6; }
+.collection-more { display: block; min-height: 46px; margin: 56px auto 0; padding: 10px 24px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font-size: 13px; font-weight: 750; transition: background .2s, color .2s, transform .2s; }
+.collection-more:hover { background: var(--ink); color: #fff; transform: translateY(-2px); }
+.collection-demo-note { margin: 26px 0 0; color: #78837c; font-size: 12px; text-align: center; }
+@keyframes showroom-in { from { opacity: 0; transform: translateY(13px); } to { opacity: 1; transform: translateY(0); } }
+.process-section { padding: clamp(88px, 10vw, 150px) clamp(24px, 5vw, 84px); background: #dce3dc; }
+.process-intro { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
+.process-intro p { max-width: 305px; margin: 0; color: #556259; font-size: 16px; line-height: 1.6; }
+.process-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(25px, 4vw, 64px); margin: 85px 0 0; padding: 0; list-style: none; border-top: 1px solid #9da99f; }
+.process-steps li { position: relative; padding-top: 44px; }
+.process-steps li::before { content: ''; position: absolute; top: -6px; left: 0; width: 11px; height: 11px; border: 2px solid #18211b; border-radius: 50%; background: #dce3dc; }
+.process-number { display: block; margin-bottom: 34px; color: #5d6d61; font-size: 14px; font-weight: 700; }
+.process-steps h3 { margin: 0 0 13px; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(25px, 2.6vw, 38px); font-weight: 600; letter-spacing: -.055em; }
+.process-steps p { max-width: 300px; margin: 0; color: #4d5a50; font-size: 15px; line-height: 1.65; }
+.process-section > .underlined-link { margin-top: 70px; }
+
+.film-section { background: #080a0a; }
+.motion-stage { position: relative; height: clamp(520px, 66vw, 790px); isolation: isolate; overflow: hidden; color: #fff; background: #101516 url('/media/bmw-m3-poster.jpg') center / cover no-repeat; }
+.motion-stage video, .motion-shade { position: absolute; z-index: -1; inset: 0; width: 100%; height: 100%; }
+.motion-stage video { object-fit: cover; transform: scale(1.06); transition: transform 1.6s cubic-bezier(.18,.8,.2,1); }
+.motion-stage.is-visible video { transform: scale(1); }
+.motion-shade { background: linear-gradient(90deg, rgba(0,0,0,.76), transparent 75%), linear-gradient(0deg, rgba(0,0,0,.48), transparent 50%); }
+.motion-copy { position: absolute; left: clamp(24px, 5vw, 84px); top: 50%; transform: translateY(-50%); }
+.motion-copy h2 { font-size: clamp(57px, 8vw, 112px); }
+.motion-copy p { max-width: 330px; margin: 26px 0 0; font-size: 17px; line-height: 1.6; color: #e0e7e2; }
+
+.closing-section { display: grid; grid-template-columns: 1.2fr .8fr; align-items: end; gap: 8vw; padding: clamp(96px, 11vw, 165px) clamp(24px, 5vw, 84px); background: #111715; color: #edf2ec; }
+.closing-section h2 { max-width: 730px; font-size: clamp(45px, 5vw, 78px); }
+.closing-section p { max-width: 350px; margin: 0 0 26px; color: #aebbb2; font-size: 17px; line-height: 1.65; }
+.site-footer { display: flex; align-items: center; justify-content: space-between; gap: 26px; padding: 42px clamp(24px, 5vw, 84px); border-top: 1px solid #445047; background: #111715; color: #dce5dc; }
+.site-footer p { margin: 0; color: #9ba99d; font-size: 13px; }
+.site-footer a:last-child { font-size: 13px; font-weight: 600; }
+
+.cars-page { min-height: 100svh; background: var(--paper); }
+.cars-intro { padding: 80px clamp(24px, 5vw, 84px) 56px; }
+.back-link { display: inline-block; margin-bottom: 42px; color: #5d6b61; font-size: 14px; font-weight: 600; }
+.cars-intro h1 { font-size: clamp(55px, 7vw, 100px); }
+.cars-intro p { margin: 24px 0 0; color: #66716a; font-size: 17px; }
+.cars-search { position: relative; min-height: 230px; background: #111715; }
+.cars-search .search-form { bottom: 24px; }
+.cars-next { display: grid; grid-template-columns: 1.25fr .75fr; align-items: end; gap: 10vw; min-height: 450px; padding: 95px clamp(24px, 5vw, 84px); }
+.cars-next-line { display: block; width: 95px; height: 1px; margin-bottom: 34px; background: #85938a; }
+.cars-next h2 { max-width: 700px; margin: 0; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(40px, 5vw, 68px); font-weight: 600; line-height: 1.05; letter-spacing: -.067em; }
+.cars-next p { max-width: 390px; margin: 0; color: #66716a; font-size: 16px; line-height: 1.7; }
+
+@media (max-width: 900px) {
+  .main-nav { display: none; }
+  .home-hero { min-height: 900px; }
+  .hero-message { width: min(660px, 82vw); margin-top: 90px; }
+  .search-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .search-submit { grid-column: 1 / -1; justify-self: start; }
+  .cars-search { min-height: 275px; }
+  .section-heading { align-items: start; }
+  .brand-mark-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 44px 14px; }
+  .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .site-header { height: 74px; padding: 0 22px; }
+  .wordmark { font-size: 25px; }
+  .header-location { display: none; }
+  .header-end .pill { min-height: 38px; padding: 9px 14px; font-size: 12px; }
+  .home-hero { min-height: 890px; min-height: max(890px, 100svh); }
+  .hero-photo { background-position: 52% center; }
+  .hero-shade { background: linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.18) 48%, rgba(0,0,0,.98) 83%), linear-gradient(90deg, rgba(0,0,0,.35), transparent); }
+  .hero-message { width: auto; margin: 48px 22px 0; }
+  .hero-message h1 { font-size: clamp(48px, 11.6vw, 66px); }
+  .hero-message p { max-width: 320px; margin-bottom: 21px; font-size: 15px; }
+  .hero-actions { gap: 9px; }
+  .hero-actions .pill { min-height: 40px; padding: 10px 15px; font-size: 12px; }
+  .search-form { left: 22px; right: 22px; bottom: 17px; }
+  .search-caption { margin-bottom: 11px; }
+  .search-fields { grid-template-columns: 1fr 1fr; gap: 14px 16px; padding-top: 15px; }
+  .search-field--location { grid-column: 1 / -1; }
+  .search-field label { margin-bottom: 3px; }
+  .search-field input, .search-field select { height: 34px; padding-bottom: 6px; font-size: 15px; }
+  .search-submit { grid-column: 1 / -1; width: 100%; min-height: 45px; }
+  .search-error { font-size: 12px; }
+  .section-heading { display: block; margin-bottom: 35px; }
+  .section-heading h2 { font-size: 45px; }
+  .section-heading p { margin-top: 19px; }
+  .brands-intro, .process-intro { display: block; }
+  .brands-intro p, .process-intro p { margin-top: 19px; font-size: 15px; }
+  .brand-mark-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 7px; }
+  .brand-mark-image { width: 54px; height: 54px; }
+  .brand-mark-name { font-size: 11px; }
+  .brand-more { margin-top: 42px; }
+  .collection-toolbar { display: block; }
+  .collection-filters { gap: 7px; }
+  .collection-filter { min-height: 37px; padding: 7px 14px; font-size: 12px; }
+  .collection-count { display: block; margin-top: 14px; }
+  .collection-grid { grid-template-columns: 1fr; gap: 35px; }
+  .collection-car-image { aspect-ratio: 1.4; border-radius: 17px; }
+  .collection-car-copy h3 { font-size: 25px; }
+  .process-steps { grid-template-columns: 1fr; gap: 0; margin-top: 45px; border-top: 0; border-left: 1px solid #9da99f; }
+  .process-steps li { padding: 0 0 38px 26px; }
+  .process-steps li::before { top: 0; left: -6px; }
+  .process-number { margin-bottom: 15px; }
+  .process-steps h3 { font-size: 28px; }
+  .process-section > .underlined-link { margin-top: 10px; }
+  .motion-stage { height: 620px; }
+  .motion-copy { top: 35%; }
+  .motion-copy h2 { font-size: 62px; }
+  .motion-copy p { font-size: 15px; }
+  .closing-section, .cars-next { grid-template-columns: 1fr; gap: 35px; }
+  .closing-section p { font-size: 16px; }
+  .site-footer { flex-direction: column; align-items: start; }
+  .cars-intro { padding-top: 60px; }
+  .cars-intro h1 { font-size: 54px; }
+  .cars-search { min-height: 290px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  .motion-stage video { display: none; }
+}
