@@ -1,42 +1,34 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ResultsExplorer } from '@/components/results-explorer';
 import { SearchForm } from '@/components/search-form';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { dateError, formatDate, todayInLondon } from '@/lib/dates';
+import { brandNames, fleet } from '@/lib/fleet';
 import { locationNames } from '@/lib/locations';
 
-export const metadata: Metadata = {
-  title: 'Find your car — Morrow',
-  description: 'Choose your London pickup location and dates to explore Morrow cars.',
-};
-
-type Search = { location?: string; pickup?: string; return?: string; type?: string; brand?: string };
-
-const brandNames: Record<string, string> = { porsche: 'Porsche', bmw: 'BMW', 'mercedes-benz': 'Mercedes-Benz', toyota: 'Toyota', ford: 'Ford', audi: 'Audi', tesla: 'Tesla', volkswagen: 'Volkswagen', honda: 'Honda', nissan: 'Nissan', chevrolet: 'Chevrolet', hyundai: 'Hyundai', kia: 'Kia', volvo: 'Volvo', renault: 'Renault', mazda: 'Mazda', lexus: 'Lexus' };
+export const metadata: Metadata = { title: 'Explore cars — Morrow', description: 'Explore the Morrow demo fleet and compare vehicle details.' };
+type Search = Record<string, string | string[] | undefined>;
+function single(value: string | string[] | undefined) { return typeof value === 'string' ? value : ''; }
 
 export default async function CarsPage({ searchParams }: { searchParams: Promise<Search> }) {
-  const params = await searchParams;
-  const location = params.location && locationNames[params.location] ? params.location : '';
-  const pickup = /^\d{4}-\d{2}-\d{2}$/.test(params.pickup || '') ? params.pickup! : '';
-  const returnDate = /^\d{4}-\d{2}-\d{2}$/.test(params.return || '') ? params.return! : '';
-  const completeSearch = Boolean(location && pickup && returnDate && returnDate > pickup);
-  const type = ['executive', 'performance', 'suv'].includes(params.type || '') ? params.type : '';
-  const brand = params.brand && brandNames[params.brand] ? brandNames[params.brand] : '';
-
-  return (
-    <main className="cars-page" id="top">
-      <SiteHeader dark={false} />
-      <div className="cars-intro">
-        <Link className="back-link" href="/">Back to Morrow</Link>
-        <h1>{brand ? `${brand} cars.` : type ? `${type[0].toUpperCase()}${type.slice(1)} cars.` : 'Find your drive.'}</h1>
-        <p>{completeSearch ? `Your search: ${locationNames[location]}, ${pickup} to ${returnDate}.` : 'Choose a pickup location and dates to begin.'}</p>
-      </div>
-      <div className="cars-search"><SearchForm initialLocation={location} initialPickup={pickup} initialReturn={returnDate} initialBrand={brand ? params.brand || '' : ''} /></div>
-      <section className="cars-next" aria-labelledby="cars-next-title">
-        <div><span className="cars-next-line" /><h2 id="cars-next-title">The collection is coming into focus.</h2></div>
-        <p>Your search is saved in the address bar. In the next feature branch, this page will show matching cars, filters, prices and availability for these dates.</p>
-      </section>
-      <SiteFooter />
-    </main>
-  );
+  const raw = await searchParams;
+  const location = locationNames[single(raw.location)] ? single(raw.location) : '';
+  const pickup = single(raw.pickup), returnDate = single(raw.return);
+  const validDates = !dateError(pickup, returnDate, todayInLondon());
+  const invalidRequestedDates = Boolean((pickup || returnDate) && !validDates);
+  const brand = brandNames[single(raw.brand)] ? single(raw.brand) : '';
+  const filter = {
+    type: ['performance', 'executive', 'suv', 'electric'].includes(single(raw.type)) ? single(raw.type) : '',
+    price: ['150', '200', '300', '400'].includes(single(raw.price)) ? single(raw.price) : '',
+    seats: ['4', '5', '7'].includes(single(raw.seats)) ? single(raw.seats) : '',
+    transmission: ['automatic', 'manual'].includes(single(raw.transmission)) ? single(raw.transmission) : '',
+    sort: ['price-low', 'price-high'].includes(single(raw.sort)) ? single(raw.sort) : 'featured',
+  };
+  const query = new URLSearchParams();
+  if (location) query.set('location', location);
+  if (validDates) { query.set('pickup', pickup); query.set('return', returnDate); }
+  if (brand) query.set('brand', brand);
+  return <main className="cars-page" id="top"><SiteHeader dark={false} /><div className="cars-intro"><Link className="back-link" href="/">Morrow / The collection</Link><h1>{brand ? `${brandNames[brand]}.` : 'The drive is yours.'}</h1><p>{location && validDates ? `${locationNames[location]} · ${formatDate(pickup)} to ${formatDate(returnDate)}` : brand && !fleet.some((car) => car.brandSlug === brand) ? 'This marque is not part of the current demo fleet.' : 'Twelve distinct ways to make the journey yours.'}</p>{invalidRequestedDates && <p className="cars-date-notice" role="alert">Those dates could not be used. Please choose a new pickup and return range.</p>}</div><div className="cars-search"><SearchForm key={`${location}-${pickup}-${returnDate}-${brand}`} initialLocation={location} initialPickup={validDates ? pickup : ''} initialReturn={validDates ? returnDate : ''} initialBrand={brand} /></div><ResultsExplorer key={JSON.stringify(raw)} brand={brand} query={query.toString()} initialFilter={filter} /><SiteFooter /></main>;
 }
