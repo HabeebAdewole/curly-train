@@ -11,6 +11,7 @@ export function SiteHeader({ dark = true }: { dark?: boolean }) {
       </nav>
       <div className="header-end">
         <span className="header-location">London, UK</span>
+        <Link className="header-account" href="/account/sign-in">Account</Link>
         <Link className="pill pill--outline" href="/#search">Find your drive</Link>
       </div>
     </header>
