@@ -2,13 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useId, useState, type FormEvent } from 'react';
+import { DateRangePicker } from '@/components/date-range-picker';
+import { dateError, todayInLondon } from '@/lib/dates';
 import { locations } from '@/lib/locations';
-
-function localToday() {
-  const now = new Date();
-  const offset = now.getTimezoneOffset() * 60_000;
-  return new Date(now.getTime() - offset).toISOString().slice(0, 10);
-}
 
 export function SearchForm({ initialLocation = '', initialPickup = '', initialReturn = '', initialBrand = '' }: {
   initialLocation?: string;
@@ -22,7 +18,6 @@ export function SearchForm({ initialLocation = '', initialPickup = '', initialRe
   const [pickup, setPickup] = useState(initialPickup);
   const [returnDate, setReturnDate] = useState(initialReturn);
   const [error, setError] = useState('');
-  const today = localToday();
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,14 +30,8 @@ export function SearchForm({ initialLocation = '', initialPickup = '', initialRe
       setError('Choose a location and both dates to see cars.');
       return;
     }
-    if (selectedPickup < today) {
-      setError('Choose a pickup date from today onwards.');
-      return;
-    }
-    if (selectedReturn <= selectedPickup) {
-      setError('Return must be after pickup.');
-      return;
-    }
+    const problem = dateError(selectedPickup, selectedReturn, todayInLondon());
+    if (problem) { setError(problem); return; }
     setError('');
     const query = new URLSearchParams({ location: selectedLocation, pickup: selectedPickup, return: selectedReturn });
     if (selectedBrand) query.set('brand', selectedBrand);
@@ -61,19 +50,12 @@ export function SearchForm({ initialLocation = '', initialPickup = '', initialRe
             {locations.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
           </select>
         </div>
-        <div className="search-field">
-          <label htmlFor="search-pickup">Pickup</label>
-          <input id="search-pickup" name="pickup" type="date" min={today} value={pickup} onChange={(event) => {
-            const next = event.target.value;
-            setPickup(next);
-            if (returnDate && returnDate <= next) setReturnDate('');
-          }} aria-describedby={error ? errorId : undefined} />
+        <div className="search-date-field">
+          <input type="hidden" name="pickup" value={pickup} />
+          <input type="hidden" name="return" value={returnDate} />
+          <DateRangePicker pickup={pickup} returnDate={returnDate} onChange={(nextPickup, nextReturn) => { setPickup(nextPickup); setReturnDate(nextReturn); setError(''); }} />
         </div>
-        <div className="search-field">
-          <label htmlFor="search-return">Return</label>
-          <input id="search-return" name="return" type="date" min={pickup || today} value={returnDate} onChange={(event) => setReturnDate(event.target.value)} aria-describedby={error ? errorId : undefined} />
-        </div>
-        <button className="search-submit" type="submit">Show available cars</button>
+        <button className="search-submit" type="submit">Explore cars</button>
       </div>
       <p className="search-error" id={errorId} role="alert">{error}</p>
     </form>
