@@ -1,44 +1,47 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import type Stripe from 'stripe';
-import { calculateQuote, pounds, validExtraIds } from '@/lib/booking';
+import { pounds } from '@/lib/booking';
 import { formatDate } from '@/lib/dates';
+import { appBaseUrl, confirmedTestJourney, flutterwaveTestKey, verifyTestPayment } from '@/lib/flutterwave-server';
 import { locationNames } from '@/lib/locations';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { testStripe } from '@/lib/stripe-server';
+import { DemoConfirmation } from '@/components/demo-confirmation';
+import { paymentMode } from '@/lib/payment-mode';
 
-export const metadata: Metadata = { title: 'Test checkout result — Morrow' };
+export const metadata: Metadata = { title: 'Checkout result — Morrow' };
 export const dynamic = 'force-dynamic';
 
-async function retrieveTestSession(stripe: Stripe, id: string) {
-  try { return await stripe.checkout.sessions.retrieve(id); }
-  catch { return null; }
-}
+type ReturnParams = { status?: string | string[]; tx_ref?: string | string[]; transaction_id?: string | string[]; demo?: string | string[] };
 
-export default async function ConfirmationPage({ searchParams }: { searchParams: Promise<{ session_id?: string | string[] }> }) {
-  const value = (await searchParams).session_id;
-  const sessionId = typeof value === 'string' && /^cs_test_[A-Za-z0-9_]+$/.test(value) ? value : '';
-  const stripe = testStripe();
-  if (!sessionId || !stripe) return <ConfirmationShell title="We could not verify this test checkout." detail="A valid Stripe test session and test key are needed to show the result." />;
+export default async function ConfirmationPage({ searchParams }: { searchParams: Promise<ReturnParams> }) {
+  const params = await searchParams;
+  if (paymentMode() === 'simulation') {
+    const reference = typeof params.demo === 'string' && /^demo-[a-f0-9]{32}$/.test(params.demo) ? params.demo : '';
+    return <main className="confirmation-page" id="top"><SiteHeader dark={false} />{reference ? <DemoConfirmation reference={reference} /> : <ConfirmationMessage title="No demo checkout result found." detail="Complete the local checkout simulation to see a result. No payment was made." />}<SiteFooter /></main>;
+  }
+  if (params.status !== 'successful') return <ConfirmationShell title="Test payment was not completed." detail="No booking was created. You can return to the cars and try again." />;
 
-  const session = await retrieveTestSession(stripe, sessionId);
-  if (!session) return <ConfirmationShell title="We could not verify this test checkout." detail="The Stripe test session could not be retrieved. No booking is shown as complete." />;
+  const reference = typeof params.tx_ref === 'string' && /^morrow-[a-f0-9]{32}$/.test(params.tx_ref) ? params.tx_ref : '';
+  const transactionId = typeof params.transaction_id === 'string' && /^\d{1,20}$/.test(params.transaction_id) ? params.transaction_id : '';
+  const key = flutterwaveTestKey();
+  if (!reference || !transactionId || !key || !appBaseUrl()) return <ConfirmationShell title="We could not verify this test checkout." detail="A valid Flutterwave test transaction and local setup are required. No booking is shown as complete." />;
 
-  const values = session.metadata || {};
-  const journey = { carId: values.carId || '', pickup: values.pickup || '', returnDate: values.returnDate || '', location: values.location || '' };
-  const extras = validExtraIds((values.extras || '').split(',').filter(Boolean));
-  const quote = calculateQuote(journey, extras);
-  const verified = !session.livemode && session.payment_status === 'paid' && session.currency === 'gbp' && quote !== null && quote.total * 100 === session.amount_total && Boolean(locationNames[journey.location]);
-  if (!verified || !quote) return <ConfirmationShell title="Test payment is not confirmed." detail="Stripe has not reported a matching paid test session. No booking is shown as complete." />;
+  let transaction = null;
+  try { transaction = await verifyTestPayment(key, transactionId); } catch { /* Show an unverified state below. */ }
+  if (!transaction || Number(transaction.id) !== Number(transactionId)) return <ConfirmationShell title="We could not verify this test checkout." detail="Flutterwave could not confirm this test transaction. No booking is shown as complete." />;
+
+  const confirmed = confirmedTestJourney(transaction, reference);
+  if (!confirmed) return <ConfirmationShell title="Test payment is not confirmed." detail="Flutterwave did not report a matching paid GBP test transaction. No booking is shown as complete." />;
+  const { journey, quote } = confirmed;
 
   return <main className="confirmation-page" id="top">
     <SiteHeader dark={false} />
     <section className="confirmation-wrap">
-      <p className="booking-kicker">Stripe test payment complete</p>
+      <p className="booking-kicker">Flutterwave test payment complete</p>
       <h1>Test payment complete.</h1>
-      <p className="confirmation-lead">Your test payment succeeded. This portfolio experience has not reserved a real vehicle.</p>
+      <p className="confirmation-lead">Flutterwave confirmed this test payment. This portfolio experience has not reserved a real vehicle.</p>
       <div className="confirmation-detail">
         <div className="confirmation-photo"><Image src={quote.car.image} alt={quote.car.alt} fill sizes="(max-width: 700px) 100vw, 45vw" style={{ objectPosition: quote.car.position }} /></div>
         <div>
@@ -48,12 +51,12 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
             <div><dt>Collection</dt><dd>{locationNames[journey.location]} · {formatDate(journey.pickup)}</dd></div>
             <div><dt>Return</dt><dd>{locationNames[journey.location]} · {formatDate(journey.returnDate)}</dd></div>
             <div><dt>Test amount</dt><dd>{pounds(quote.total)}</dd></div>
-            <div><dt>Stripe reference</dt><dd>{session.id.slice(-12)}</dd></div>
+            <div><dt>Payment reference</dt><dd>{reference.slice(-12)}</dd></div>
           </dl>
           <Link className="booking-next confirmation-link" href="/cars">Explore more cars</Link>
         </div>
       </div>
-      <p className="booking-fine-print">This is a verified Stripe test payment only. No real rental, inventory hold, or booking record was created.</p>
+      <p className="booking-fine-print">This is a verified Flutterwave test payment only. No real rental, inventory hold, or booking record was created.</p>
     </section>
     <SiteFooter />
   </main>;
@@ -62,12 +65,11 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
 function ConfirmationShell({ title, detail }: { title: string; detail: string }) {
   return <main className="confirmation-page" id="top">
     <SiteHeader dark={false} />
-    <section className="confirmation-wrap confirmation-wrap--message">
-      <p className="booking-kicker">Checkout status</p>
-      <h1>{title}</h1>
-      <p className="confirmation-lead">{detail}</p>
-      <Link className="booking-next confirmation-link" href="/cars">Back to the cars</Link>
-    </section>
+    <ConfirmationMessage title={title} detail={detail} />
     <SiteFooter />
   </main>;
+}
+
+function ConfirmationMessage({ title, detail }: { title: string; detail: string }) {
+  return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Checkout status</p><h1>{title}</h1><p className="confirmation-lead">{detail}</p><Link className="booking-next confirmation-link" href="/cars">Back to the cars</Link></section>;
 }

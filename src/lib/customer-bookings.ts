@@ -13,7 +13,7 @@ export type DemoBooking = {
   status: DemoBookingStatus;
 };
 
-// Illustrative customer journeys. They are not created by Stripe Checkout or
+// Illustrative customer journeys. They are not created by test checkout or
 // connected to a real vehicle, payment, or inventory system.
 export function exampleBookings(today = todayInLondon()): DemoBooking[] {
   return [

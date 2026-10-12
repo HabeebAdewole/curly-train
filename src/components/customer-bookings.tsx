@@ -24,7 +24,7 @@ export function CustomerBookings({ email }: { email: string }) {
   const shown = bookings?.filter((booking) => filter === 'all' || booking.status === filter) || [];
 
   return <section aria-labelledby="customer-bookings-title">
-    <div className="customer-section-heading"><p className="booking-kicker">01 / My bookings</p><h2 id="customer-bookings-title">Your journeys.</h2><p>Explore the customer experience with example bookings. These are not real reservations or Stripe payments.</p></div>
+    <div className="customer-section-heading"><p className="booking-kicker">01 / My bookings</p><h2 id="customer-bookings-title">Your journeys.</h2><p>Explore the customer experience with example bookings. These are not real reservations or test payments.</p></div>
     <div className="customer-filters" role="group" aria-label="Filter bookings">{filters.map((item) => <button key={item.value} type="button" className={filter === item.value ? 'is-active' : ''} aria-pressed={filter === item.value} onClick={() => setFilter(item.value)}>{item.label}</button>)}</div>
     {!bookings ? <p className="customer-empty" role="status">Loading example journeys…</p> : shown.length ? <div className="customer-booking-list">{shown.map((booking) => {
       const car = carById(booking.carId);

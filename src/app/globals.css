@@ -407,6 +407,8 @@ a { text-decoration: none; }
 .confirmation-link { display: inline-flex; align-items: center; justify-content: center; margin: 0; text-decoration: none; }
 .confirmation-wrap--message { min-height: 66svh; }
 .confirmation-wrap--message .confirmation-link { margin-top: 39px; }
+.demo-checkout-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; margin-top: 34px; }
+.demo-checkout-actions .booking-next { margin-left: 0; }
 
 /* Phase 4 customer entry. */
 .account-page { min-height: 100svh; background: var(--paper); }
