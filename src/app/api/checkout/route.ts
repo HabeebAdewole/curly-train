@@ -1,11 +1,11 @@
+import { randomUUID } from 'node:crypto';
 import { calculateQuote, validExtraIds, validateDriver, validateJourney, type Driver, type Journey } from '@/lib/booking';
-import { locationNames } from '@/lib/locations';
-import { appBaseUrl, testStripe } from '@/lib/stripe-server';
+import { appBaseUrl, createTestPayment, flutterwaveTestKey } from '@/lib/flutterwave-server';
+import { paymentMode } from '@/lib/payment-mode';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
-  const baseUrl = appBaseUrl();
   const origin = request.headers.get('origin');
   if (origin && origin !== new URL(request.url).origin) return Response.json({ error: 'This checkout request was not sent from Morrow.' }, { status: 403 });
   if (!request.headers.get('content-type')?.includes('application/json') || Number(request.headers.get('content-length') || 0) > 10_000) return Response.json({ error: 'Invalid checkout request.' }, { status: 400 });
@@ -32,25 +32,23 @@ export async function POST(request: Request) {
 
   const quote = calculateQuote(journey, extras);
   if (!quote) return Response.json({ error: 'The selected journey could not be priced.' }, { status: 400 });
-  const stripe = testStripe();
-  if (!stripe || !baseUrl) return Response.json({ error: 'Stripe test checkout is not configured yet. Add your test key and app URL to .env.local.' }, { status: 503 });
-  const cancelQuery = new URLSearchParams({ pickup: journey.pickup, return: journey.returnDate, location: journey.location, canceled: '1' });
+  if (paymentMode() === 'simulation') return Response.json({ mode: 'simulation', reference: `demo-${randomUUID().replaceAll('-', '')}`, journey, extras }, { headers: { 'Cache-Control': 'no-store' } });
+  const key = flutterwaveTestKey();
+  const baseUrl = appBaseUrl();
+  if (!key || !baseUrl) return Response.json({ error: 'Flutterwave test checkout is not configured yet. Add the test secret key and app URL to .env.local.' }, { status: 503 });
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      customer_email: driver.email.trim(),
-      line_items: [
-        { price_data: { currency: 'gbp', unit_amount: quote.car.dailyRate * 100, product_data: { name: `Morrow demo — ${quote.car.name}`, description: `${locationNames[journey.location]} · ${journey.pickup} to ${journey.returnDate}` } }, quantity: quote.days },
-        ...quote.extras.map((extra) => ({ price_data: { currency: 'gbp', unit_amount: extra.dailyRate * 100, product_data: { name: `${extra.name} (demo)` } }, quantity: quote.days })),
-      ],
-      metadata: { carId: journey.carId, pickup: journey.pickup, returnDate: journey.returnDate, location: journey.location, extras: extras.join(',') },
-      success_url: `${baseUrl}/booking/confirmation?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/book/${journey.carId}?${cancelQuery}`,
+    const url = await createTestPayment(key, {
+      reference: `morrow-${randomUUID().replaceAll('-', '')}`,
+      amount: quote.total,
+      email: driver.email.trim(),
+      journey,
+      extras,
+      redirectUrl: `${baseUrl}/booking/confirmation`,
     });
-    if (!session.url) return Response.json({ error: 'Stripe did not return a checkout page.' }, { status: 502 });
-    return Response.json({ url: session.url }, { headers: { 'Cache-Control': 'no-store' } });
+    if (!url) return Response.json({ error: 'Flutterwave did not return a GBP test checkout. Check the test account’s currency access and try again.' }, { status: 502 });
+    return Response.json({ mode: 'flutterwave', url }, { headers: { 'Cache-Control': 'no-store' } });
   } catch {
-    return Response.json({ error: 'Stripe test checkout is unavailable right now. Check the test key and try again.' }, { status: 502 });
+    return Response.json({ error: 'Flutterwave test checkout is unavailable right now. Check the test key and try again.' }, { status: 502 });
   }
 }
