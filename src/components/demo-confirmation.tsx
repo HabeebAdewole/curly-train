@@ -13,21 +13,19 @@ export function DemoConfirmation({ reference }: { reference: string }) {
   const checkout = parseDemoCheckout(raw);
   const quote = checkout && checkout.reference === reference && checkout.status === 'completed' ? calculateQuote(checkout.journey, checkout.extras) : null;
 
-  if (!checkout || !quote) return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Local simulation</p><h1>No completed demo checkout found.</h1><p className="confirmation-lead">This result is stored only in the browser tab where the simulation was completed.</p><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>;
+  if (!checkout || !quote) return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Your journey</p><h1>Journey details unavailable.</h1><p className="confirmation-lead">Choose a car to start a new plan.</p><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>;
 
   return <section className="confirmation-wrap">
-    <p className="booking-kicker">Simulation complete · No payment made</p>
-    <h1>Demo journey complete.</h1>
-    <p className="confirmation-lead">You completed the sample checkout. No money moved and no vehicle was reserved.</p>
+    <p className="booking-kicker">Your journey</p>
+    <h1>Your route, ready.</h1>
+    <p className="confirmation-lead">A considered drive starts with the right details.</p>
     <div className="confirmation-detail">
       <div className="confirmation-photo"><Image src={quote.car.image} alt={quote.car.alt} fill sizes="(max-width: 700px) 100vw, 45vw" style={{ objectPosition: quote.car.position }} /></div>
-      <div><p className="booking-kicker">Your demonstration journey</p><h2>{quote.car.name}</h2><dl>
+      <div><p className="booking-kicker">The details</p><h2>{quote.car.name}</h2><dl>
         <div><dt>Collection</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.pickup)}</dd></div>
         <div><dt>Return</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.returnDate)}</dd></div>
-        <div><dt>Illustrative total</dt><dd>{pounds(quote.total)}</dd></div>
-        <div><dt>Demo reference</dt><dd>{reference.slice(-12)}</dd></div>
+        <div><dt>Estimated total</dt><dd>{pounds(quote.total)}</dd></div>
       </dl><Link className="booking-next confirmation-link" href="/cars">Explore more cars</Link></div>
     </div>
-    <p className="booking-fine-print">This result exists only in this browser tab. It is not a payment receipt, reservation, or entry in My bookings.</p>
   </section>;
 }

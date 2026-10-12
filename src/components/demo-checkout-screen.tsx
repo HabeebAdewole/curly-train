@@ -14,15 +14,15 @@ export function DemoCheckoutScreen() {
   const raw = useSyncExternalStore(subscribeDemoCheckout, demoCheckoutSnapshot, () => null);
   const checkout = parseDemoCheckout(raw);
 
-  if (!checkout || checkout.status !== 'pending') return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Local simulation</p><h1>No demo checkout is open.</h1><p className="confirmation-lead">Start with a car and complete the four booking steps.</p><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>;
+  if (!checkout || checkout.status !== 'pending') return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Checkout</p><h1>No journey is in progress.</h1><p className="confirmation-lead">Choose a car and complete the journey details to continue.</p><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>;
 
   const quote = calculateQuote(checkout.journey, checkout.extras);
-  if (!quote) return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Local simulation</p><h1>This sample journey is no longer available.</h1><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>;
+  if (!quote) return <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Checkout</p><h1>This journey needs a fresh start.</h1><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>;
 
   function complete() {
     if (!checkout) return;
     sessionStorage.setItem(demoCheckoutKey, JSON.stringify({ ...checkout, status: 'completed' } satisfies DemoCheckout));
-    router.push(`/booking/confirmation?demo=${encodeURIComponent(checkout.reference)}`);
+    router.push(`/booking/confirmation?plan=${encodeURIComponent(checkout.reference)}`);
   }
 
   function cancel() {
@@ -33,22 +33,21 @@ export function DemoCheckoutScreen() {
   }
 
   return <section className="confirmation-wrap demo-checkout-wrap">
-    <p className="booking-kicker">Local checkout simulation</p>
-    <h1>Finish the demonstration.</h1>
-    <p className="confirmation-lead">This screen demonstrates the final checkout decision. No payment provider, card details, money, or vehicle reservation is involved.</p>
+    <p className="booking-kicker">Checkout</p>
+    <h1>Make it yours.</h1>
+    <p className="confirmation-lead">Take one final look at the journey you’ve put together.</p>
     <div className="confirmation-detail">
       <div className="confirmation-photo"><Image src={quote.car.image} alt={quote.car.alt} fill sizes="(max-width: 700px) 100vw, 45vw" style={{ objectPosition: quote.car.position }} /></div>
       <div>
-        <p className="booking-kicker">Your sample journey</p>
+        <p className="booking-kicker">Your journey</p>
         <h2>{quote.car.name}</h2>
         <dl>
           <div><dt>Collection</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.pickup)}</dd></div>
           <div><dt>Return</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.returnDate)}</dd></div>
           <div><dt>Duration</dt><dd>{quote.days} {quote.days === 1 ? 'day' : 'days'}</dd></div>
-          <div><dt>Illustrative total</dt><dd>{pounds(quote.total)}</dd></div>
+          <div><dt>Estimated total</dt><dd>{pounds(quote.total)}</dd></div>
         </dl>
-        <p className="booking-fine-print">Completing this simulation records its result only in this browser tab. It will not appear as a real booking in your account.</p>
-        <div className="demo-checkout-actions"><button className="booking-next" type="button" onClick={complete}>Complete simulation</button><button className="booking-back" type="button" onClick={cancel}>Cancel simulation</button></div>
+        <div className="demo-checkout-actions"><button className="booking-next" type="button" onClick={complete}>Finish planning</button><button className="booking-back" type="button" onClick={cancel}>Back to journey</button></div>
       </div>
     </div>
   </section>;

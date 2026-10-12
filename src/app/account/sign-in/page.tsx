@@ -20,12 +20,11 @@ export default async function SignInPage() {
       <section className="account-entry-main">
         <p className="booking-kicker">Your Morrow space</p>
         <h1>The road ahead, all in one place.</h1>
-        <p className="account-entry-intro">Sign in or create your profile with Google. The journeys shown inside are clearly marked portfolio examples.</p>
+        <p className="account-entry-intro">Sign in with Google to explore your Morrow space.</p>
         {ready ? <form action={async () => {
           'use server';
           await signIn('google', { redirectTo: '/account/bookings' });
         }}><button type="submit" className="booking-next account-entry-submit">Continue with Google</button></form> : <div className="account-setup-note" role="status"><strong>Google sign-in is waiting for setup.</strong><p>Add the Auth.js and Google OAuth values from <code>.env.example</code> to your ignored <code>.env.local</code>, then restart the app.</p></div>}
-        <p className="booking-fine-print">Your Google account handles sign-in. Morrow does not ask for or store your Google password. Sample bookings and editable driver details in this portfolio are kept only in the current browser session.</p>
         <Link className="account-entry-return" href="/cars">Explore the cars</Link>
       </section>
       <figure className="account-entry-visual"><Image src="/media/mercedes-s-class.webp" alt="Graphite Mercedes-Benz S-Class against a pale backdrop" fill sizes="(max-width: 900px) 100vw, 48vw" /><figcaption><span>01 / YOUR JOURNEYS</span><strong>Good to have the details in one place.</strong></figcaption></figure>

@@ -27,7 +27,7 @@ export function DateRangePicker({ pickup, returnDate, onChange, blocked = [], co
   function shiftMonth(amount: number) { setMonth((current) => new Date(Date.UTC(current.getUTCFullYear(), current.getUTCMonth() + amount, 1))); }
   function select(day: string) {
     if (!pickup || returnDate || day <= pickup) { onChange(day, ''); setMessage('Now choose a return date.'); return; }
-    if (rangeContainsBlocked(pickup, day, blocked)) { setMessage('That range includes an example unavailable day. Choose another return date.'); return; }
+    if (rangeContainsBlocked(pickup, day, blocked)) { setMessage('That range includes an unavailable day. Choose another return date.'); return; }
     onChange(pickup, day); close();
   }
 
@@ -76,9 +76,8 @@ export function DateRangePicker({ pickup, returnDate, onChange, blocked = [], co
           <div className="date-dialog-top"><div><p className="eyebrow">YOUR DATES</p><h2 id="date-title">Set the journey.</h2></div><button type="button" className="date-close" onClick={close} aria-label="Close date picker">×</button></div>
           <p id="date-instructions" className="date-instructions">Choose pickup, then return. Use arrow keys to move by day, Page Up or Down by month, and Escape to close.</p>
           <div className="date-month-head"><button type="button" onClick={() => shiftMonth(-1)} disabled={monthLabel === new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(parseISODate(today)!)} aria-label="Previous month">‹</button><h3 aria-live="polite">{monthLabel}</h3><button type="button" onClick={() => shiftMonth(1)} aria-label="Next month">›</button></div>
-          <div className="date-grid">{weekdays.map((day) => <span className="date-weekday" key={day}>{day}</span>)}{days.map((day, index) => day ? <button type="button" key={day} data-day={day} disabled={day < today || blocked.includes(day)} aria-label={`${formatDate(day)}${blocked.includes(day) ? ', example unavailable' : ''}`} aria-pressed={day === pickup || day === returnDate} className={`date-day${day === pickup || day === returnDate ? ' is-selected' : ''}${pickup && returnDate && day > pickup && day < returnDate ? ' is-between' : ''}${day === today ? ' is-today' : ''}`} onClick={() => select(day)}>{Number(day.slice(-2))}</button> : <span key={`empty-${index}`} />)}</div>
+          <div className="date-grid">{weekdays.map((day) => <span className="date-weekday" key={day}>{day}</span>)}{days.map((day, index) => day ? <button type="button" key={day} data-day={day} disabled={day < today || blocked.includes(day)} aria-label={`${formatDate(day)}${blocked.includes(day) ? ', unavailable' : ''}`} aria-pressed={day === pickup || day === returnDate} className={`date-day${day === pickup || day === returnDate ? ' is-selected' : ''}${pickup && returnDate && day > pickup && day < returnDate ? ' is-between' : ''}${day === today ? ' is-today' : ''}`} onClick={() => select(day)}>{Number(day.slice(-2))}</button> : <span key={`empty-${index}`} />)}</div>
           <div className="date-dialog-bottom"><span aria-live="polite">{message || (pickup && returnDate && !dateError(pickup, returnDate, today) ? `${rentalDays(pickup, returnDate)} calendar days selected` : 'Select two dates')}</span><button type="button" onClick={close}>Done</button></div>
-          {blocked.length > 0 && <p className="date-example-note">Struck-through dates are example unavailable days for this demo car. Live availability is not connected.</p>}
         </div>
       </div>}
     </>
