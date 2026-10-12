@@ -4,7 +4,7 @@ import { locations } from '@/lib/locations';
 
 export const extrasCatalog = [
   { id: 'additional-driver', name: 'Additional driver', description: 'Share the driving on a longer journey.', dailyRate: 18 },
-  { id: 'child-seat', name: 'Child seat', description: 'Add a child seat to the demo booking.', dailyRate: 8 },
+  { id: 'child-seat', name: 'Child seat', description: 'Add a child seat for the journey.', dailyRate: 8 },
 ] as const;
 
 export type ExtraId = (typeof extrasCatalog)[number]['id'];
@@ -25,8 +25,8 @@ export function validateJourney(value: Journey, today = todayInLondon()): FieldE
   if (!locations.some((location) => location.value === value.location)) errors.location = 'Choose a pickup location.';
   const datesProblem = dateError(value.pickup, value.returnDate, today);
   if (datesProblem) errors.pickup = datesProblem;
-  else if (rentalDays(value.pickup, value.returnDate) > 28) errors.returnDate = 'For this demo, choose 28 days or fewer.';
-  else if (car && rangeContainsBlocked(value.pickup, value.returnDate, exampleBlockedDates(fleet.indexOf(car), today))) errors.returnDate = 'This range includes an example unavailable date.';
+  else if (rentalDays(value.pickup, value.returnDate) > 28) errors.returnDate = 'Choose 28 days or fewer.';
+  else if (car && rangeContainsBlocked(value.pickup, value.returnDate, exampleBlockedDates(fleet.indexOf(car), today))) errors.returnDate = 'This range includes an unavailable date.';
   return errors;
 }
 

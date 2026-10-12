@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
   const quote = calculateQuote(journey, extras);
   if (!quote) return Response.json({ error: 'The selected journey could not be priced.' }, { status: 400 });
-  if (paymentMode() === 'simulation') return Response.json({ mode: 'simulation', reference: `demo-${randomUUID().replaceAll('-', '')}`, journey, extras }, { headers: { 'Cache-Control': 'no-store' } });
+  if (paymentMode() === 'simulation') return Response.json({ mode: 'simulation', reference: `plan-${randomUUID().replaceAll('-', '')}`, journey, extras }, { headers: { 'Cache-Control': 'no-store' } });
   const key = flutterwaveTestKey();
   const baseUrl = appBaseUrl();
   if (!key || !baseUrl) return Response.json({ error: 'Flutterwave test checkout is not configured yet. Add the test secret key and app URL to .env.local.' }, { status: 503 });

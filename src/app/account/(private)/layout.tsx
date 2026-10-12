@@ -22,7 +22,6 @@ export default async function CustomerLayout({ children }: Readonly<{ children: 
           <Link href="/account/bookings">My bookings</Link>
           <Link href="/account/profile">Profile & driver details</Link>
           <CustomerSignOut email={session.user.email} />
-          <p>Google handles your sign-in. Journeys and editable details here are portfolio examples in this browser.</p>
         </nav>
         <div className="customer-content">{children}</div>
       </div>

@@ -5,7 +5,6 @@ import { BookingWizard } from '@/components/booking-wizard';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { carById } from '@/lib/fleet';
-import { paymentMode } from '@/lib/payment-mode';
 
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -22,7 +21,7 @@ export default async function BookPage({ params, searchParams }: Props) {
     <SiteHeader dark={false} />
     <div className="booking-wrap">
       <Link className="back-link" href={`/cars/${car.id}`}>Morrow / {car.name}</Link>
-      <BookingWizard car={car} initialPickup={single('pickup')} initialReturn={single('return')} initialLocation={single('location')} canceled={single('canceled') === '1'} checkoutMode={paymentMode()} />
+      <BookingWizard car={car} initialPickup={single('pickup')} initialReturn={single('return')} initialLocation={single('location')} canceled={single('canceled') === '1'} />
     </div>
     <SiteFooter />
   </main>;

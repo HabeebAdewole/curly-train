@@ -1,6 +1,6 @@
 import { calculateQuote, validExtraIds, type ExtraId, type Journey } from '@/lib/booking';
 
-export const demoCheckoutKey = 'morrow-demo-checkout';
+export const demoCheckoutKey = 'morrow-journey-checkout';
 
 export type DemoCheckout = {
   reference: string;
@@ -15,7 +15,7 @@ export function parseDemoCheckout(raw: string | null): DemoCheckout | null {
     const value: unknown = JSON.parse(raw);
     if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
     const record = value as Record<string, unknown>;
-    if (typeof record.reference !== 'string' || !/^demo-[a-f0-9]{32}$/.test(record.reference)) return null;
+    if (typeof record.reference !== 'string' || !/^plan-[a-f0-9]{32}$/.test(record.reference)) return null;
     if (record.status !== 'pending' && record.status !== 'completed') return null;
     if (!record.journey || typeof record.journey !== 'object' || Array.isArray(record.journey)) return null;
     const selected = record.journey as Record<string, unknown>;

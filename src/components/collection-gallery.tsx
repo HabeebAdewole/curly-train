@@ -41,7 +41,6 @@ export function CollectionGallery() {
         ))}
       </div>
       {filtered.length > 6 && <button className="collection-more" type="button" aria-expanded={expanded} aria-controls="collection-grid" onClick={() => setExpanded((value) => !value)}>{expanded ? 'Show fewer cars' : `See all ${filtered.length} cars`}</button>}
-      <p className="collection-demo-note">A visual preview of the collection. Vehicle availability will be confirmed when booking opens.</p>
     </>
   );
 }

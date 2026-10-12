@@ -13,13 +13,13 @@ import { paymentMode } from '@/lib/payment-mode';
 export const metadata: Metadata = { title: 'Checkout result — Morrow' };
 export const dynamic = 'force-dynamic';
 
-type ReturnParams = { status?: string | string[]; tx_ref?: string | string[]; transaction_id?: string | string[]; demo?: string | string[] };
+type ReturnParams = { status?: string | string[]; tx_ref?: string | string[]; transaction_id?: string | string[]; plan?: string | string[] };
 
 export default async function ConfirmationPage({ searchParams }: { searchParams: Promise<ReturnParams> }) {
   const params = await searchParams;
   if (paymentMode() === 'simulation') {
-    const reference = typeof params.demo === 'string' && /^demo-[a-f0-9]{32}$/.test(params.demo) ? params.demo : '';
-    return <main className="confirmation-page" id="top"><SiteHeader dark={false} />{reference ? <DemoConfirmation reference={reference} /> : <ConfirmationMessage title="No demo checkout result found." detail="Complete the local checkout simulation to see a result. No payment was made." />}<SiteFooter /></main>;
+    const reference = typeof params.plan === 'string' && /^plan-[a-f0-9]{32}$/.test(params.plan) ? params.plan : '';
+    return <main className="confirmation-page" id="top"><SiteHeader dark={false} />{reference ? <DemoConfirmation reference={reference} /> : <ConfirmationMessage title="Journey details unavailable." detail="Choose a car to start a new plan." />}<SiteFooter /></main>;
   }
   if (params.status !== 'successful') return <ConfirmationShell title="Test payment was not completed." detail="No booking was created. You can return to the cars and try again." />;
 

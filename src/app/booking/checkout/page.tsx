@@ -5,12 +5,12 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { paymentMode } from '@/lib/payment-mode';
 
-export const metadata: Metadata = { title: 'Local checkout simulation — Morrow' };
+export const metadata: Metadata = { title: 'Checkout — Morrow' };
 export const dynamic = 'force-dynamic';
 
-export default function DemoCheckoutPage() {
+export default function CheckoutPage() {
   return <main className="confirmation-page" id="top"><SiteHeader dark={false} />
-    {paymentMode() === 'simulation' ? <DemoCheckoutScreen /> : <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Checkout</p><h1>Simulation is not active.</h1><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>}
+    {paymentMode() === 'simulation' ? <DemoCheckoutScreen /> : <section className="confirmation-wrap confirmation-wrap--message"><p className="booking-kicker">Checkout</p><h1>Checkout is unavailable.</h1><Link className="booking-next confirmation-link" href="/cars">Explore the cars</Link></section>}
     <SiteFooter />
   </main>;
 }
