@@ -140,7 +140,16 @@ a { text-decoration: none; }
 .closing-section p { max-width: 350px; margin: 0 0 26px; color: #aebbb2; font-size: 17px; line-height: 1.65; }
 .site-footer { display: flex; align-items: center; justify-content: space-between; gap: 26px; padding: 42px clamp(24px, 5vw, 84px); border-top: 1px solid #445047; background: #111715; color: #dce5dc; }
 .site-footer p { margin: 0; color: #9ba99d; font-size: 13px; }
-.site-footer a:last-child { font-size: 13px; font-weight: 600; }
+.site-footer nav { display: flex; gap: 24px; }
+.site-footer nav a { font-size: 13px; font-weight: 600; }
+.site-footer nav a:hover { color: #fff; }
+.privacy-wrap { max-width: 1000px; min-height: 65svh; padding: clamp(85px, 9vw, 135px) clamp(24px, 5vw, 84px) 125px; }
+.privacy-wrap h1 { margin: 17px 0 26px; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(57px, 7vw, 96px); font-weight: 600; line-height: 1; letter-spacing: -.075em; }
+.privacy-wrap > p { max-width: 690px; color: #5e7062; font-size: 17px; line-height: 1.65; }
+.privacy-sections { margin-top: 68px; border-top: 1px solid #aab9ac; }
+.privacy-sections section { display: grid; grid-template-columns: minmax(175px, .4fr) 1fr; gap: 35px; padding: 28px 0; border-bottom: 1px solid #aab9ac; }
+.privacy-sections h2 { margin: 0; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(23px, 2.3vw, 31px); font-weight: 650; letter-spacing: -.055em; }
+.privacy-sections p { margin: 0; color: #5e7062; font-size: 15px; line-height: 1.7; }
 
 .cars-page { min-height: 100svh; background: var(--paper); }
 .cars-intro { padding: 80px clamp(24px, 5vw, 84px) 56px; }
@@ -168,6 +177,7 @@ a { text-decoration: none; }
 }
 
 @media (max-width: 640px) {
+  .privacy-sections section { grid-template-columns: 1fr; gap: 10px; }
   .site-header { height: 74px; padding: 0 22px; }
   .wordmark { font-size: 25px; }
   .header-location { display: none; }
