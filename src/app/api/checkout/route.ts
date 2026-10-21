@@ -7,7 +7,7 @@ export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
   const origin = request.headers.get('origin');
-  if (origin && origin !== new URL(request.url).origin) return Response.json({ error: 'This checkout request was not sent from Morrow.' }, { status: 403 });
+  if (origin && origin !== new URL(request.url).origin) return Response.json({ error: 'This checkout request was not sent from Rinjo.' }, { status: 403 });
   if (!request.headers.get('content-type')?.includes('application/json') || Number(request.headers.get('content-length') || 0) > 10_000) return Response.json({ error: 'Invalid checkout request.' }, { status: 400 });
 
   let body: Record<string, unknown>;
@@ -39,14 +39,14 @@ export async function POST(request: Request) {
 
   try {
     const url = await createTestPayment(key, {
-      reference: `morrow-${randomUUID().replaceAll('-', '')}`,
+      reference: `rinjo-${randomUUID().replaceAll('-', '')}`,
       amount: quote.total,
       email: driver.email.trim(),
       journey,
       extras,
       redirectUrl: `${baseUrl}/booking/confirmation`,
     });
-    if (!url) return Response.json({ error: 'Flutterwave did not return a GBP test checkout. Check the test account’s currency access and try again.' }, { status: 502 });
+    if (!url) return Response.json({ error: 'Flutterwave did not return a NGN test checkout. Check the test account’s currency access and try again.' }, { status: 502 });
     return Response.json({ mode: 'flutterwave', url }, { headers: { 'Cache-Control': 'no-store' } });
   } catch {
     return Response.json({ error: 'Flutterwave test checkout is unavailable right now. Check the test key and try again.' }, { status: 502 });

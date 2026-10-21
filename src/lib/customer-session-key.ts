@@ -6,5 +6,5 @@ export function customerSessionKey(kind: 'bookings' | 'driver', email: string) {
     hash ^= char.charCodeAt(0);
     hash = Math.imul(hash, 16777619);
   }
-  return `morrow-example-${kind}-${(hash >>> 0).toString(36)}-v1`;
+  return `rinjo-example-${kind}-${(hash >>> 0).toString(36)}-v1`;
 }

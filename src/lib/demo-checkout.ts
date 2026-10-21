@@ -1,6 +1,6 @@
 import { calculateQuote, validExtraIds, type ExtraId, type Journey } from '@/lib/booking';
 
-export const demoCheckoutKey = 'morrow-journey-checkout';
+export const demoCheckoutKey = 'rinjo-journey-checkout';
 
 export type DemoCheckout = {
   reference: string;

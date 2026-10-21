@@ -1,7 +1,7 @@
 const dayMs = 86_400_000;
 
-export function todayInLondon() {
-  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+export function todayInNigeria() {
+  const parts = new Intl.DateTimeFormat('en-NG', { timeZone: 'Africa/Lagos', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
   const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
   return `${value.year}-${value.month}-${value.day}`;
 }
@@ -21,9 +21,9 @@ export function rentalDays(pickup: string, returnDate: string) {
 }
 export function formatDate(value: string) {
   const date = parseISODate(value);
-  return date ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date) : '';
+  return date ? new Intl.DateTimeFormat('en-NG', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date) : '';
 }
-export function dateError(pickup: string, returnDate: string, today = todayInLondon()) {
+export function dateError(pickup: string, returnDate: string, today = todayInNigeria()) {
   if (!parseISODate(pickup) || !parseISODate(returnDate)) return 'Choose valid pickup and return dates.';
   if (pickup < today) return 'Choose a pickup date from today onwards.';
   if (returnDate <= pickup) return 'Return must be after pickup.';
@@ -33,7 +33,7 @@ export function rangeContainsBlocked(pickup: string, returnDate: string, blocked
   return blocked.some((day) => day >= pickup && day <= returnDate);
 }
 // Relative, deterministic example dates only. They do not represent live fleet inventory.
-export function exampleBlockedDates(carIndex: number, today = todayInLondon()) {
+export function exampleBlockedDates(carIndex: number, today = todayInNigeria()) {
   const first = 4 + (carIndex % 5);
   return [addDays(today, first), addDays(today, first + 1), addDays(today, 13 + (carIndex % 4))];
 }

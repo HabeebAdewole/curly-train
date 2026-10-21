@@ -5,7 +5,7 @@ import { validateJourney } from '@/lib/booking';
 import { canChangeDemoBooking, exampleBookings, type DemoBooking } from '@/lib/customer-bookings';
 import { customerSessionKey } from '@/lib/customer-session-key';
 
-const eventName = 'morrow-example-bookings-change';
+const eventName = 'rinjo-example-bookings-change';
 
 function loadBookings(raw: string | null): DemoBooking[] {
   const examples = exampleBookings();

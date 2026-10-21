@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { BrandExplorer } from '@/components/brand-explorer';
 import { CollectionGallery } from '@/components/collection-gallery';
 import { MotionVideo } from '@/components/motion-video';
@@ -15,7 +16,7 @@ export default function Home() {
         <SiteHeader />
         <div className="hero-message">
           <h1 id="hero-title">Drive beyond<br />the expected.</h1>
-          <p>Remarkable cars for the moments that deserve more than a way to get there.</p>
+          <p>Remarkable cars for Lagos plans, Abuja arrivals, and every drive worth choosing well.</p>
           <div className="hero-actions">
             <Link className="pill pill--filled" href="#cars">Explore the cars</Link>
             <Link className="pill pill--outline" href="#how-it-works">How it works</Link>
@@ -40,6 +41,11 @@ export default function Home() {
         <CollectionGallery />
       </section>
 
+      <section className="city-story" aria-labelledby="city-story-title">
+        <Image src="/media/abuja-street.jpg" alt="Cars travelling through Abuja after rain" fill sizes="100vw" />
+        <div className="city-story-copy"><span>01 / ABUJA, NIGERIA</span><h2 id="city-story-title">The city is part of the journey.</h2><p>Choose a pickup close to where your day begins. The right car meets you there.</p></div>
+      </section>
+
       <section className="process-section" id="how-it-works" aria-labelledby="process-title">
         <div className="process-intro"><h2 id="process-title">From first look<br />to first mile.</h2><p>Three clear moments between finding your car and taking the wheel.</p></div>
         <ol className="process-steps">
@@ -50,7 +56,7 @@ export default function Home() {
         <Link className="underlined-link" href="#search">Start with your dates</Link>
       </section>
 
-      <section className="film-section" id="approach" aria-label="The Morrow driving experience">
+      <section className="film-section" id="approach" aria-label="The Rinjo driving experience">
         <MotionVideo />
       </section>
 

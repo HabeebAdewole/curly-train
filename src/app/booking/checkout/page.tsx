@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { paymentMode } from '@/lib/payment-mode';
 
-export const metadata: Metadata = { title: 'Checkout — Morrow' };
+export const metadata: Metadata = { title: 'Checkout — Rinjo' };
 export const dynamic = 'force-dynamic';
 
 export default function CheckoutPage() {

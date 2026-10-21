@@ -1,10 +1,10 @@
-import { dateError, exampleBlockedDates, rangeContainsBlocked, rentalDays, todayInLondon } from '@/lib/dates';
+import { dateError, exampleBlockedDates, rangeContainsBlocked, rentalDays, todayInNigeria } from '@/lib/dates';
 import { carById, fleet } from '@/lib/fleet';
 import { locations } from '@/lib/locations';
 
 export const extrasCatalog = [
-  { id: 'additional-driver', name: 'Additional driver', description: 'Share the driving on a longer journey.', dailyRate: 18 },
-  { id: 'child-seat', name: 'Child seat', description: 'Add a child seat for the journey.', dailyRate: 8 },
+  { id: 'additional-driver', name: 'Additional driver', description: 'Share the driving on a longer journey.', dailyRate: 15000 },
+  { id: 'child-seat', name: 'Child seat', description: 'Add a child seat for the journey.', dailyRate: 7500 },
 ] as const;
 
 export type ExtraId = (typeof extrasCatalog)[number]['id'];
@@ -18,7 +18,7 @@ export function validExtraIds(values: unknown): ExtraId[] {
   return [...new Set(values)].filter((value): value is ExtraId => typeof value === 'string' && extrasCatalog.some((extra) => extra.id === value));
 }
 
-export function validateJourney(value: Journey, today = todayInLondon()): FieldErrors {
+export function validateJourney(value: Journey, today = todayInNigeria()): FieldErrors {
   const errors: FieldErrors = {};
   const car = carById(value.carId);
   if (!car) errors.carId = 'Choose a car from the collection.';
@@ -49,4 +49,4 @@ export function calculateQuote(journey: Journey, selectedExtras: ExtraId[]) {
   return { car, days, carAmount, extras, total: carAmount + extras.reduce((sum, extra) => sum + extra.amount, 0) };
 }
 
-export function pounds(amount: number) { return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(amount); }
+export function naira(amount: number) { return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(amount); }

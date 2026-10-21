@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { addDays, dateError, formatDate, isoDate, parseISODate, rangeContainsBlocked, rentalDays, todayInLondon } from '@/lib/dates';
+import { addDays, dateError, formatDate, isoDate, parseISODate, rangeContainsBlocked, rentalDays, todayInNigeria } from '@/lib/dates';
 
 const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
@@ -13,12 +13,12 @@ export function DateRangePicker({ pickup, returnDate, onChange, blocked = [], co
   compact?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const [month, setMonth] = useState(() => { const date = parseISODate(pickup) || parseISODate(todayInLondon())!; return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1)); });
+  const [month, setMonth] = useState(() => { const date = parseISODate(pickup) || parseISODate(todayInNigeria())!; return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1)); });
   const [message, setMessage] = useState('');
   const dialogRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const today = todayInLondon();
-  const monthLabel = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(month);
+  const today = todayInNigeria();
+  const monthLabel = new Intl.DateTimeFormat('en-NG', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(month);
   const firstWeekday = (month.getUTCDay() + 6) % 7;
   const numberOfDays = new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth() + 1, 0)).getUTCDate();
   const days = Array.from({ length: firstWeekday + numberOfDays }, (_, index) => index < firstWeekday ? '' : isoDate(new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), index - firstWeekday + 1))));
@@ -75,7 +75,7 @@ export function DateRangePicker({ pickup, returnDate, onChange, blocked = [], co
         <div className="date-dialog" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="date-title" aria-describedby="date-instructions" onKeyDown={onKeyDown}>
           <div className="date-dialog-top"><div><p className="eyebrow">YOUR DATES</p><h2 id="date-title">Set the journey.</h2></div><button type="button" className="date-close" onClick={close} aria-label="Close date picker">×</button></div>
           <p id="date-instructions" className="date-instructions">Choose pickup, then return. Use arrow keys to move by day, Page Up or Down by month, and Escape to close.</p>
-          <div className="date-month-head"><button type="button" onClick={() => shiftMonth(-1)} disabled={monthLabel === new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(parseISODate(today)!)} aria-label="Previous month">‹</button><h3 aria-live="polite">{monthLabel}</h3><button type="button" onClick={() => shiftMonth(1)} aria-label="Next month">›</button></div>
+          <div className="date-month-head"><button type="button" onClick={() => shiftMonth(-1)} disabled={monthLabel === new Intl.DateTimeFormat('en-NG', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(parseISODate(today)!)} aria-label="Previous month">‹</button><h3 aria-live="polite">{monthLabel}</h3><button type="button" onClick={() => shiftMonth(1)} aria-label="Next month">›</button></div>
           <div className="date-grid">{weekdays.map((day) => <span className="date-weekday" key={day}>{day}</span>)}{days.map((day, index) => day ? <button type="button" key={day} data-day={day} disabled={day < today || blocked.includes(day)} aria-label={`${formatDate(day)}${blocked.includes(day) ? ', unavailable' : ''}`} aria-pressed={day === pickup || day === returnDate} className={`date-day${day === pickup || day === returnDate ? ' is-selected' : ''}${pickup && returnDate && day > pickup && day < returnDate ? ' is-between' : ''}${day === today ? ' is-today' : ''}`} onClick={() => select(day)}>{Number(day.slice(-2))}</button> : <span key={`empty-${index}`} />)}</div>
           <div className="date-dialog-bottom"><span aria-live="polite">{message || (pickup && returnDate && !dateError(pickup, returnDate, today) ? `${rentalDays(pickup, returnDate)} calendar days selected` : 'Select two dates')}</span><button type="button" onClick={close}>Done</button></div>
         </div>

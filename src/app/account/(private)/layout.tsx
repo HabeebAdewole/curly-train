@@ -16,7 +16,7 @@ export default async function CustomerLayout({ children }: Readonly<{ children: 
   return <main className="account-page" id="top">
     <SiteHeader dark={false} />
     <div className="customer-wrap">
-      <div className="customer-heading"><p className="booking-kicker">Your Morrow space</p><h1>The journey, considered.</h1><p>Welcome, {session.user.name || 'driver'}.</p></div>
+      <div className="customer-heading"><p className="booking-kicker">Your Rinjo space</p><h1>The journey, considered.</h1><p>Welcome, {session.user.name || 'driver'}.</p></div>
       <div className="customer-layout">
         <nav className="customer-nav" aria-label="Customer account">
           <Link href="/account/bookings">My bookings</Link>

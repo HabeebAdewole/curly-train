@@ -8,7 +8,7 @@ import { exampleBookings } from '@/lib/customer-bookings';
 type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return { title: `Journey ${(await params).id} — Morrow` };
+  return { title: `Journey ${(await params).id} — Rinjo` };
 }
 
 export default async function BookingDetailPage({ params }: Props) {

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSyncExternalStore } from 'react';
-import { calculateQuote, pounds } from '@/lib/booking';
+import { calculateQuote, naira } from '@/lib/booking';
 import { demoCheckoutSnapshot, parseDemoCheckout, subscribeDemoCheckout } from '@/lib/demo-checkout';
 import { formatDate } from '@/lib/dates';
 import { locationNames } from '@/lib/locations';
@@ -24,7 +24,7 @@ export function DemoConfirmation({ reference }: { reference: string }) {
       <div><p className="booking-kicker">The details</p><h2>{quote.car.name}</h2><dl>
         <div><dt>Collection</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.pickup)}</dd></div>
         <div><dt>Return</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.returnDate)}</dd></div>
-        <div><dt>Estimated total</dt><dd>{pounds(quote.total)}</dd></div>
+        <div><dt>Estimated total</dt><dd>{naira(quote.total)}</dd></div>
       </dl><Link className="booking-next confirmation-link" href="/cars">Explore more cars</Link></div>
     </div>
   </section>;

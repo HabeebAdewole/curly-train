@@ -46,7 +46,7 @@ a { text-decoration: none; }
 
 .home-hero { position: relative; min-height: max(850px, 100svh); isolation: isolate; overflow: hidden; color: #f5f7f3; background: #050606; }
 .hero-photo, .hero-shade { position: absolute; z-index: -1; inset: 0; }
-.hero-photo { background: url('/media/hero-mercedes.jpg') center 48% / cover no-repeat; }
+.hero-photo { background: url('/media/lagos-bridge-hero.jpg') center 48% / cover no-repeat; }
 .hero-shade { background: linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.54) 34%, rgba(0,0,0,.12) 75%), linear-gradient(180deg, rgba(0,0,0,.27) 0%, transparent 51%, rgba(0,0,0,.96) 94%); }
 .hero-message { position: relative; margin-left: clamp(24px, 5vw, 84px); margin-top: clamp(62px, 10vh, 130px); width: min(640px, 52vw); }
 .hero-message h1 { margin: 0 0 25px; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(54px, 6.4vw, 98px); font-weight: 600; line-height: .98; letter-spacing: -.078em; }
@@ -113,6 +113,13 @@ a { text-decoration: none; }
 .collection-more { display: block; min-height: 46px; margin: 56px auto 0; padding: 10px 24px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font-size: 13px; font-weight: 750; transition: background .2s, color .2s, transform .2s; }
 .collection-more:hover { background: var(--ink); color: #fff; transform: translateY(-2px); }
 .collection-demo-note { margin: 26px 0 0; color: #78837c; font-size: 12px; text-align: center; }
+.city-story { position: relative; min-height: clamp(440px, 55vw, 680px); display: flex; align-items: end; overflow: hidden; color: #f7f8f5; background: #14221f; }
+.city-story img { object-fit: cover; object-position: center 52%; }
+.city-story::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(4,10,9,.75), rgba(4,10,9,.08) 70%), linear-gradient(0deg, rgba(4,10,9,.73), transparent 70%); }
+.city-story-copy { position: relative; z-index: 1; width: 100%; padding: 0 clamp(24px, 5vw, 84px) clamp(42px, 6vw, 88px); }
+.city-story-copy > span { display: block; margin-bottom: 16px; font-size: 13px; font-weight: 700; letter-spacing: .15em; }
+.city-story-copy h2 { max-width: 720px; margin: 0; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(46px, 6vw, 88px); font-weight: 600; line-height: 1; letter-spacing: -.07em; }
+.city-story-copy p { max-width: 430px; margin: 22px 0 0; color: #e1e9e2; font-size: 17px; line-height: 1.6; }
 @keyframes showroom-in { from { opacity: 0; transform: translateY(13px); } to { opacity: 1; transform: translateY(0); } }
 .process-section { padding: clamp(88px, 10vw, 150px) clamp(24px, 5vw, 84px); background: #dce3dc; }
 .process-intro { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
