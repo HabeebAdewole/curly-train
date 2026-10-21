@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { pounds } from '@/lib/booking';
+import { naira } from '@/lib/booking';
 import { demoBookingAmount, type DemoBookingStatus } from '@/lib/customer-bookings';
 import { formatDate } from '@/lib/dates';
 import { carById } from '@/lib/fleet';
@@ -31,7 +31,7 @@ export function CustomerBookings({ email }: { email: string }) {
       if (!car) return null;
       return <article className="customer-booking-row" key={booking.id}>
         <div className="customer-booking-photo"><Image src={car.image} alt={car.alt} fill sizes="(max-width: 700px) 100vw, 280px" style={{ objectPosition: car.position }} /></div>
-        <div className="customer-booking-details"><div className="customer-booking-meta"><span>{booking.id}</span><span className={`customer-status customer-status--${booking.status}`}>{booking.status}</span></div><h3>{car.name}</h3><p>{locationNames[booking.location]} · {formatDate(booking.pickup)} – {formatDate(booking.returnDate)}</p><strong>{pounds(demoBookingAmount(booking))} <small>estimated total</small></strong></div>
+        <div className="customer-booking-details"><div className="customer-booking-meta"><span>{booking.id}</span><span className={`customer-status customer-status--${booking.status}`}>{booking.status}</span></div><h3>{car.name}</h3><p>{locationNames[booking.location]} · {formatDate(booking.pickup)} – {formatDate(booking.returnDate)}</p><strong>{naira(demoBookingAmount(booking))} <small>estimated total</small></strong></div>
         <Link className="customer-booking-link" href={`/account/bookings/${booking.id}`}>View details<span className="sr-only"> for {car.name}</span></Link>
       </article>;
     })}</div> : <div className="customer-empty"><strong>No {filter === 'all' ? '' : filter} journeys here.</strong><p>Choose another status to explore.</p></div>}

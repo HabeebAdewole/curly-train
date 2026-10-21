@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { pounds } from '@/lib/booking';
+import { naira } from '@/lib/booking';
 import { formatDate } from '@/lib/dates';
 import { appBaseUrl, confirmedTestJourney, flutterwaveTestKey, verifyTestPayment } from '@/lib/flutterwave-server';
 import { locationNames } from '@/lib/locations';
@@ -10,7 +10,7 @@ import { SiteHeader } from '@/components/site-header';
 import { DemoConfirmation } from '@/components/demo-confirmation';
 import { paymentMode } from '@/lib/payment-mode';
 
-export const metadata: Metadata = { title: 'Checkout result — Morrow' };
+export const metadata: Metadata = { title: 'Checkout result — Rinjo' };
 export const dynamic = 'force-dynamic';
 
 type ReturnParams = { status?: string | string[]; tx_ref?: string | string[]; transaction_id?: string | string[]; plan?: string | string[] };
@@ -23,7 +23,7 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
   }
   if (params.status !== 'successful') return <ConfirmationShell title="Test payment was not completed." detail="No booking was created. You can return to the cars and try again." />;
 
-  const reference = typeof params.tx_ref === 'string' && /^morrow-[a-f0-9]{32}$/.test(params.tx_ref) ? params.tx_ref : '';
+  const reference = typeof params.tx_ref === 'string' && /^rinjo-[a-f0-9]{32}$/.test(params.tx_ref) ? params.tx_ref : '';
   const transactionId = typeof params.transaction_id === 'string' && /^\d{1,20}$/.test(params.transaction_id) ? params.transaction_id : '';
   const key = flutterwaveTestKey();
   if (!reference || !transactionId || !key || !appBaseUrl()) return <ConfirmationShell title="We could not verify this test checkout." detail="A valid Flutterwave test transaction and local setup are required. No booking is shown as complete." />;
@@ -33,7 +33,7 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
   if (!transaction || Number(transaction.id) !== Number(transactionId)) return <ConfirmationShell title="We could not verify this test checkout." detail="Flutterwave could not confirm this test transaction. No booking is shown as complete." />;
 
   const confirmed = confirmedTestJourney(transaction, reference);
-  if (!confirmed) return <ConfirmationShell title="Test payment is not confirmed." detail="Flutterwave did not report a matching paid GBP test transaction. No booking is shown as complete." />;
+  if (!confirmed) return <ConfirmationShell title="Test payment is not confirmed." detail="Flutterwave did not report a matching paid NGN test transaction. No booking is shown as complete." />;
   const { journey, quote } = confirmed;
 
   return <main className="confirmation-page" id="top">
@@ -50,7 +50,7 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
           <dl>
             <div><dt>Collection</dt><dd>{locationNames[journey.location]} · {formatDate(journey.pickup)}</dd></div>
             <div><dt>Return</dt><dd>{locationNames[journey.location]} · {formatDate(journey.returnDate)}</dd></div>
-            <div><dt>Test amount</dt><dd>{pounds(quote.total)}</dd></div>
+            <div><dt>Test amount</dt><dd>{naira(quote.total)}</dd></div>
             <div><dt>Payment reference</dt><dd>{reference.slice(-12)}</dd></div>
           </dl>
           <Link className="booking-next confirmation-link" href="/cars">Explore more cars</Link>

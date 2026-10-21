@@ -4,7 +4,7 @@ import { auth } from '@/auth';
 import { CustomerProfile } from '@/components/customer-profile';
 import { authReady } from '@/lib/auth-ready';
 
-export const metadata: Metadata = { title: 'Profile and driver details — Morrow' };
+export const metadata: Metadata = { title: 'Profile and driver details — Rinjo' };
 
 export default async function ProfilePage() {
   if (!authReady()) redirect('/account/sign-in');

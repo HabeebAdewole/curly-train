@@ -32,10 +32,10 @@ export async function createTestPayment(key: string, details: {
     body: JSON.stringify({
       tx_ref: details.reference,
       amount: details.amount,
-      currency: 'GBP',
+      currency: 'NGN',
       redirect_url: details.redirectUrl,
       customer: { email: details.email },
-      customizations: { title: 'Morrow portfolio test checkout', description: 'Demonstration journey — no real vehicle reservation' },
+      customizations: { title: 'Rinjo portfolio test checkout', description: 'Demonstration journey — no real vehicle reservation' },
       meta: { ...details.journey, extras: details.extras.join(',') },
     }),
     cache: 'no-store',
@@ -62,7 +62,7 @@ export async function verifyTestPayment(key: string, transactionId: string) {
 }
 
 export function confirmedTestJourney(transaction: Record<string, unknown>, reference: string) {
-  if (transaction.tx_ref !== reference || transaction.status !== 'successful' || transaction.currency !== 'GBP') return null;
+  if (transaction.tx_ref !== reference || transaction.status !== 'successful' || transaction.currency !== 'NGN') return null;
   let meta: unknown = transaction.meta;
   if (typeof meta === 'string') {
     try { meta = JSON.parse(meta); } catch { return null; }

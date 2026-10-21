@@ -3,7 +3,7 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import { customerSessionKey } from '@/lib/customer-session-key';
 
-const eventName = 'morrow-example-driver-change';
+const eventName = 'rinjo-example-driver-change';
 
 function subscribe(callback: () => void) {
   window.addEventListener(eventName, callback);
@@ -45,7 +45,7 @@ export function CustomerProfile({ name, email }: { name: string; email: string }
     <form className="customer-profile-form" onSubmit={save} noValidate>
       <h3>Driver details.</h3><p>Add your phone number and the country that issued your licence.</p>
       <div className="booking-field"><label htmlFor="customer-phone">Phone number</label><input id="customer-phone" type="tel" autoComplete="off" value={phone} onChange={(event) => { setDraft({ phone: event.target.value, licenceCountry }); setError(''); setSaved(false); }} placeholder="+44 7700 900000" /></div>
-      <div className="booking-field"><label htmlFor="customer-licence-country">Licence issuing country</label><input id="customer-licence-country" autoComplete="off" value={licenceCountry} onChange={(event) => { setDraft({ phone, licenceCountry: event.target.value }); setError(''); setSaved(false); }} placeholder="e.g. United Kingdom" /></div>
+      <div className="booking-field"><label htmlFor="customer-licence-country">Licence issuing country</label><input id="customer-licence-country" autoComplete="off" value={licenceCountry} onChange={(event) => { setDraft({ phone, licenceCountry: event.target.value }); setError(''); setSaved(false); }} placeholder="e.g. Nigeria" /></div>
       {error && <p className="booking-field-error" role="alert">{error}</p>}
       {saved && <p className="customer-notice" role="status">Driver details saved for this session.</p>}
       <button type="submit" className="booking-next">Save details</button>

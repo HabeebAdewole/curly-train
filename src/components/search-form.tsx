@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useId, useState, type FormEvent } from 'react';
 import { DateRangePicker } from '@/components/date-range-picker';
-import { dateError, todayInLondon } from '@/lib/dates';
-import { locations } from '@/lib/locations';
+import { dateError, todayInNigeria } from '@/lib/dates';
+import { locationCities, locations } from '@/lib/locations';
 
 export function SearchForm({ initialLocation = '', initialPickup = '', initialReturn = '', initialBrand = '' }: {
   initialLocation?: string;
@@ -30,7 +30,7 @@ export function SearchForm({ initialLocation = '', initialPickup = '', initialRe
       setError('Choose a location and both dates to see cars.');
       return;
     }
-    const problem = dateError(selectedPickup, selectedReturn, todayInLondon());
+    const problem = dateError(selectedPickup, selectedReturn, todayInNigeria());
     if (problem) { setError(problem); return; }
     setError('');
     const query = new URLSearchParams({ location: selectedLocation, pickup: selectedPickup, return: selectedReturn });
@@ -47,7 +47,7 @@ export function SearchForm({ initialLocation = '', initialPickup = '', initialRe
           <label htmlFor="search-location">Pickup location</label>
           <select id="search-location" name="location" value={location} onChange={(event) => setLocation(event.target.value)} aria-describedby={error ? errorId : undefined}>
             <option value="">Choose a location</option>
-            {locations.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+            {locationCities.map((city) => <optgroup key={city} label={city}>{locations.filter((item) => item.city === city).map(({ value, label }) => <option key={value} value={value}>{label}</option>)}</optgroup>)}
           </select>
         </div>
         <div className="search-date-field">

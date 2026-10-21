@@ -9,7 +9,7 @@ import { carById } from '@/lib/fleet';
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const car = carById((await params).id);
-  return { title: car ? `Plan your ${car.name} drive — Morrow` : 'Car not found — Morrow' };
+  return { title: car ? `Plan your ${car.name} drive — Rinjo` : 'Car not found — Rinjo' };
 }
 
 export default async function BookPage({ params, searchParams }: Props) {
@@ -20,7 +20,7 @@ export default async function BookPage({ params, searchParams }: Props) {
   return <main className="booking-page" id="top">
     <SiteHeader dark={false} />
     <div className="booking-wrap">
-      <Link className="back-link" href={`/cars/${car.id}`}>Morrow / {car.name}</Link>
+      <Link className="back-link" href={`/cars/${car.id}`}>Rinjo / {car.name}</Link>
       <BookingWizard car={car} initialPickup={single('pickup')} initialReturn={single('return')} initialLocation={single('location')} canceled={single('canceled') === '1'} />
     </div>
     <SiteFooter />

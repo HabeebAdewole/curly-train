@@ -7,7 +7,7 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { authReady } from '@/lib/auth-ready';
 
-export const metadata: Metadata = { title: 'Your account — Morrow' };
+export const metadata: Metadata = { title: 'Your account — Rinjo' };
 export const dynamic = 'force-dynamic';
 
 export default async function SignInPage() {
@@ -18,9 +18,9 @@ export default async function SignInPage() {
     <SiteHeader dark={false} />
     <div className="account-entry-layout">
       <section className="account-entry-main">
-        <p className="booking-kicker">Your Morrow space</p>
+        <p className="booking-kicker">Your Rinjo space</p>
         <h1>The road ahead, all in one place.</h1>
-        <p className="account-entry-intro">Sign in with Google to explore your Morrow space.</p>
+        <p className="account-entry-intro">Sign in with Google to explore your Rinjo space.</p>
         {ready ? <form action={async () => {
           'use server';
           await signIn('google', { redirectTo: '/account/bookings' });

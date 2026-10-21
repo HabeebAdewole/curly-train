@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
-import { calculateQuote, pounds } from '@/lib/booking';
+import { calculateQuote, naira } from '@/lib/booking';
 import { demoCheckoutKey, demoCheckoutSnapshot, parseDemoCheckout, subscribeDemoCheckout, type DemoCheckout } from '@/lib/demo-checkout';
 import { formatDate } from '@/lib/dates';
 import { locationNames } from '@/lib/locations';
@@ -45,7 +45,7 @@ export function DemoCheckoutScreen() {
           <div><dt>Collection</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.pickup)}</dd></div>
           <div><dt>Return</dt><dd>{locationNames[checkout.journey.location]} · {formatDate(checkout.journey.returnDate)}</dd></div>
           <div><dt>Duration</dt><dd>{quote.days} {quote.days === 1 ? 'day' : 'days'}</dd></div>
-          <div><dt>Estimated total</dt><dd>{pounds(quote.total)}</dd></div>
+          <div><dt>Estimated total</dt><dd>{naira(quote.total)}</dd></div>
         </dl>
         <div className="demo-checkout-actions"><button className="booking-next" type="button" onClick={complete}>Finish planning</button><button className="booking-back" type="button" onClick={cancel}>Back to journey</button></div>
       </div>
