@@ -21,6 +21,7 @@ export default async function SignInPage() {
         <p className="booking-kicker">Your Rinjo space</p>
         <h1>The road ahead, all in one place.</h1>
         <p className="account-entry-intro">Sign in with Google to explore your Rinjo space.</p>
+        <p className="booking-fine-print">Sign-in is optional for browsing. Google shares basic profile information for your session. Read our <Link href="/privacy">privacy notice</Link> before continuing.</p>
         {ready ? <form action={async () => {
           'use server';
           await signIn('google', { redirectTo: '/account/bookings' });

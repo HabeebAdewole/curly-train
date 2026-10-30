@@ -8,6 +8,8 @@ import { customerSessionKey } from '@/lib/customer-session-key';
 const eventName = 'rinjo-example-bookings-change';
 
 function loadBookings(raw: string | null): DemoBooking[] {
+  // Sample account records stay hidden unless deliberately enabled in a private build.
+  if (process.env.NEXT_PUBLIC_SHOW_SAMPLE_JOURNEYS !== 'true') return [];
   const examples = exampleBookings();
   try {
     const saved = JSON.parse(raw || 'null');
