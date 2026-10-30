@@ -17,8 +17,8 @@ export function DemoConfirmation({ reference }: { reference: string }) {
 
   return <section className="confirmation-wrap">
     <p className="booking-kicker">Your journey</p>
-    <h1>Your route, ready.</h1>
-    <p className="confirmation-lead">A considered drive starts with the right details.</p>
+    <h1>Your plan is ready.</h1>
+    <p className="confirmation-lead">This plan is saved in your browser session. It is not a rental reservation.</p>
     <div className="confirmation-detail">
       <div className="confirmation-photo"><Image src={quote.car.image} alt={quote.car.alt} fill sizes="(max-width: 700px) 100vw, 45vw" style={{ objectPosition: quote.car.position }} /></div>
       <div><p className="booking-kicker">The details</p><h2>{quote.car.name}</h2><dl>

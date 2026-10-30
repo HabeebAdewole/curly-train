@@ -28,11 +28,12 @@ export async function POST(request: Request) {
     licenceCountry: typeof rawDriver.licenceCountry === 'string' ? rawDriver.licenceCountry : '',
   };
   const extras = validExtraIds(body.extras);
-  if (!Array.isArray(body.extras) || body.extras.length !== extras.length || Object.keys(validateJourney(journey)).length || Object.keys(validateDriver(driver)).length) return Response.json({ error: 'Check the journey and driver details, then try again.' }, { status: 400 });
+  if (!Array.isArray(body.extras) || body.extras.length !== extras.length || Object.keys(validateJourney(journey)).length) return Response.json({ error: 'Check the journey details, then try again.' }, { status: 400 });
 
   const quote = calculateQuote(journey, extras);
   if (!quote) return Response.json({ error: 'The selected journey could not be priced.' }, { status: 400 });
   if (paymentMode() === 'simulation') return Response.json({ mode: 'simulation', reference: `plan-${randomUUID().replaceAll('-', '')}`, journey, extras }, { headers: { 'Cache-Control': 'no-store' } });
+  if (Object.keys(validateDriver(driver)).length) return Response.json({ error: 'Payment setup is not available for this journey.' }, { status: 503 });
   const key = flutterwaveTestKey();
   const baseUrl = appBaseUrl();
   if (!key || !baseUrl) return Response.json({ error: 'Flutterwave test checkout is not configured yet. Add the test secret key and app URL to .env.local.' }, { status: 503 });

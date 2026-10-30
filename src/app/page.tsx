@@ -16,7 +16,7 @@ export default function Home() {
         <SiteHeader />
         <div className="hero-message">
           <h1 id="hero-title">Drive beyond<br />the expected.</h1>
-          <p>Remarkable cars for Lagos plans, Abuja arrivals, and every drive worth choosing well.</p>
+          <p>Explore how a considered rental journey could work across Lagos and Abuja. Vehicles and rates are illustrative while the operator platform is in development.</p>
           <div className="hero-actions">
             <Link className="pill pill--filled" href="#cars">Explore the cars</Link>
             <Link className="pill pill--outline" href="#how-it-works">How it works</Link>
@@ -43,15 +43,15 @@ export default function Home() {
 
       <section className="city-story" aria-labelledby="city-story-title">
         <Image src="/media/abuja-street.jpg" alt="Cars travelling through Abuja after rain" fill sizes="100vw" />
-        <div className="city-story-copy"><span>01 / ABUJA, NIGERIA</span><h2 id="city-story-title">The city is part of the journey.</h2><p>Choose a pickup close to where your day begins. The right car meets you there.</p></div>
+        <div className="city-story-copy"><span>01 / ABUJA, NIGERIA</span><h2 id="city-story-title">The city is part of the journey.</h2><p>Explore pickup areas close to where your day begins. A future rental operator will confirm what is available.</p></div>
       </section>
 
       <section className="process-section" id="how-it-works" aria-labelledby="process-title">
-        <div className="process-intro"><h2 id="process-title">From first look<br />to first mile.</h2><p>Three clear moments between finding your car and taking the wheel.</p></div>
+        <div className="process-intro"><h2 id="process-title">From first look<br />to a clear plan.</h2><p>Three clear moments for exploring the journey.</p></div>
         <ol className="process-steps">
           <li><span className="process-number">01</span><h3>Set your plans.</h3><p>Choose your pickup location and dates. Start with the journey you have in mind.</p></li>
-          <li><span className="process-number">02</span><h3>Make your choice.</h3><p>Compare cars, review the details, and see the full cost before you confirm.</p></li>
-          <li><span className="process-number">03</span><h3>Take the wheel.</h3><p>Find your booking details in one place, then collect the car and enjoy the drive.</p></li>
+          <li><span className="process-number">02</span><h3>Make your choice.</h3><p>Compare cars and review an illustrative price before saving a plan.</p></li>
+          <li><span className="process-number">03</span><h3>Keep the plan.</h3><p>Review the route and dates you chose. No vehicle is reserved yet.</p></li>
         </ol>
         <Link className="underlined-link" href="#search">Start with your dates</Link>
       </section>
@@ -63,7 +63,7 @@ export default function Home() {
       <section className="closing-section">
         <h2>A good journey begins before you turn the key.</h2>
         <div>
-          <p>Choose the car that feels right. Set your dates. We’ll make the rest of the experience feel just as considered.</p>
+          <p>Choose a car, set your dates and explore the planning flow. Real rental terms will come from each participating operator.</p>
           <Link className="pill pill--outline" href="#search">Find your car</Link>
         </div>
       </section>

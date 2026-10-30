@@ -7,7 +7,7 @@ export function SiteHeader({ dark = true }: { dark?: boolean }) {
       <nav className="main-nav" aria-label="Main navigation">
         <Link href="/#cars">The cars</Link>
         <Link href="/#how-it-works">How it works</Link>
-        <Link href="/#search">Book a car</Link>
+        <Link href="/#search">Plan a drive</Link>
       </nav>
       <div className="header-end">
         <span className="header-location">Lagos · Abuja, Nigeria</span>

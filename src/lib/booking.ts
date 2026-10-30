@@ -1,5 +1,5 @@
-import { dateError, exampleBlockedDates, rangeContainsBlocked, rentalDays, todayInNigeria } from '@/lib/dates';
-import { carById, fleet } from '@/lib/fleet';
+import { dateError, rentalDays, todayInNigeria } from '@/lib/dates';
+import { carById } from '@/lib/fleet';
 import { locations } from '@/lib/locations';
 
 export const extrasCatalog = [
@@ -26,7 +26,6 @@ export function validateJourney(value: Journey, today = todayInNigeria()): Field
   const datesProblem = dateError(value.pickup, value.returnDate, today);
   if (datesProblem) errors.pickup = datesProblem;
   else if (rentalDays(value.pickup, value.returnDate) > 28) errors.returnDate = 'Choose 28 days or fewer.';
-  else if (car && rangeContainsBlocked(value.pickup, value.returnDate, exampleBlockedDates(fleet.indexOf(car), today))) errors.returnDate = 'This range includes an unavailable date.';
   return errors;
 }
 

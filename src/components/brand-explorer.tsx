@@ -40,6 +40,7 @@ export function BrandExplorer() {
       <button className="collection-more brand-more" type="button" aria-expanded={expanded} aria-controls="brand-mark-grid" onClick={() => setExpanded((value) => !value)}>
         {expanded ? 'Show fewer brands' : `View all ${brands.length} brands`}
       </button>
+      <p className="brand-disclosure">Vehicle makes are shown to explore the interface. The manufacturers do not sponsor or endorse Rinjo.</p>
     </>
   );
 }
