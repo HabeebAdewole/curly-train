@@ -35,7 +35,7 @@ export function DemoCheckoutScreen() {
   return <section className="confirmation-wrap demo-checkout-wrap">
     <p className="booking-kicker">Checkout</p>
     <h1>Make it yours.</h1>
-    <p className="confirmation-lead">Take one final look at the journey you’ve put together.</p>
+    <p className="confirmation-lead">Take one final look at the journey plan. This step does not charge you or reserve a car.</p>
     <div className="confirmation-detail">
       <div className="confirmation-photo"><Image src={quote.car.image} alt={quote.car.alt} fill sizes="(max-width: 700px) 100vw, 45vw" style={{ objectPosition: quote.car.position }} /></div>
       <div>

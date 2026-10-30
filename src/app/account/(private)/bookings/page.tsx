@@ -4,7 +4,7 @@ import { auth } from '@/auth';
 import { CustomerBookings } from '@/components/customer-bookings';
 import { authReady } from '@/lib/auth-ready';
 
-export const metadata: Metadata = { title: 'My bookings — Rinjo' };
+export const metadata: Metadata = { title: 'Journey plans — Rinjo' };
 
 export default async function BookingsPage() {
   if (!authReady()) redirect('/account/sign-in');

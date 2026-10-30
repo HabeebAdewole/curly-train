@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { CookieNotice } from '@/components/cookie-notice';
 import './globals.css';
 
 const manrope = localFont({ src: '../assets/fonts/Manrope.ttf', variable: '--font-manrope', weight: '200 800', display: 'swap' });
@@ -7,13 +8,13 @@ const dmSans = localFont({ src: '../assets/fonts/DMSans.ttf', variable: '--font-
 
 export const metadata: Metadata = {
   title: 'Rinjo — Drive beyond the expected',
-  description: 'A considered car rental experience in Lagos and Abuja. Explore the cars and plan your next drive.',
+  description: 'Rinjo is booking software in development for car rental operators in Lagos and Abuja. Explore the current planning experience.',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} ${dmSans.variable}`}>{children}</body>
+      <body className={`${manrope.variable} ${dmSans.variable}`}>{children}<CookieNotice /></body>
     </html>
   );
 }

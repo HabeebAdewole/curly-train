@@ -4,38 +4,30 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DateRangePicker } from '@/components/date-range-picker';
-import { calculateQuote, extrasCatalog, naira, validExtraIds, validateDriver, validateJourney, type Driver, type ExtraId, type FieldErrors, type Journey } from '@/lib/booking';
-import { exampleBlockedDates, formatDate, rentalDays } from '@/lib/dates';
-import { fleet, type Car } from '@/lib/fleet';
+import { calculateQuote, extrasCatalog, naira, validExtraIds, validateJourney, type ExtraId, type FieldErrors, type Journey } from '@/lib/booking';
+import { formatDate, rentalDays } from '@/lib/dates';
+import { type Car } from '@/lib/fleet';
 import { locationCities, locations, locationNames } from '@/lib/locations';
 import { demoCheckoutKey, type DemoCheckout } from '@/lib/demo-checkout';
 import type { PaymentMode } from '@/lib/payment-mode';
 
 const steps = ['Journey', 'Extras', 'Driver', 'Review'] as const;
-const emptyDriver: Driver = { fullName: '', email: '', phone: '', licenceCountry: '' };
 
 export function BookingWizard({ car, initialPickup, initialReturn, initialLocation, canceled }: { car: Car; initialPickup: string; initialReturn: string; initialLocation: string; canceled: boolean }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [journey, setJourney] = useState<Journey>({ carId: car.id, pickup: initialPickup, returnDate: initialReturn, location: initialLocation });
   const [extras, setExtras] = useState<ExtraId[]>([]);
-  const [driver, setDriver] = useState<Driver>(emptyDriver);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [agreed, setAgreed] = useState(false);
   const [pending, setPending] = useState(false);
   const [checkoutError, setCheckoutError] = useState('');
-  const blocked = exampleBlockedDates(fleet.findIndex((item) => item.id === car.id));
   const journeyValid = Object.keys(validateJourney(journey)).length === 0;
   const quote = journeyValid ? calculateQuote(journey, extras) : null;
 
   function next() {
     if (step === 0) {
       const found = validateJourney(journey);
-      setErrors(found);
-      if (Object.keys(found).length) return;
-    }
-    if (step === 2) {
-      const found = validateDriver(driver);
       setErrors(found);
       if (Object.keys(found).length) return;
     }
@@ -50,14 +42,12 @@ export function BookingWizard({ car, initialPickup, initialReturn, initialLocati
 
   async function beginTestCheckout() {
     const journeyErrors = validateJourney(journey);
-    const driverErrors = validateDriver(driver);
     if (Object.keys(journeyErrors).length) { setErrors(journeyErrors); setStep(0); return; }
-    if (Object.keys(driverErrors).length) { setErrors(driverErrors); setStep(2); return; }
-    if (!agreed) { setErrors({ agreement: 'Confirm that the journey details are correct.' }); return; }
+    if (!agreed) { setErrors({ agreement: 'Confirm the site terms and that this is a journey plan, not a reservation.' }); return; }
     setPending(true);
     setCheckoutError('');
     try {
-      const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...journey, extras: validExtraIds(extras), driver }) });
+      const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...journey, extras: validExtraIds(extras) }) });
       const data: { mode?: PaymentMode; url?: string; reference?: string; journey?: Journey; extras?: ExtraId[]; error?: string } = await response.json();
       if (!response.ok) throw new Error(data.error || 'Checkout could not start. Try again.');
       if (data.mode === 'simulation' && data.reference && data.journey && data.extras) {
@@ -83,7 +73,7 @@ export function BookingWizard({ car, initialPickup, initialReturn, initialLocati
         {step === 0 && <>
           <div className="booking-section-head"><h2>When and where.</h2><p>Choose your pickup location and travel dates. Return to the same location.</p></div>
           <div className="booking-field"><label htmlFor="booking-location">Pickup and return location</label><select id="booking-location" value={journey.location} onChange={(event) => { setJourney((current) => ({ ...current, location: event.target.value })); setErrors((current) => ({ ...current, location: undefined })); }} aria-invalid={Boolean(errors.location)} aria-describedby={errors.location ? 'location-error' : undefined}><option value="">Choose a location</option>{locationCities.map((city) => <optgroup key={city} label={city}>{locations.filter((item) => item.city === city).map((location) => <option key={location.value} value={location.value}>{location.label}</option>)}</optgroup>)}</select>{errors.location && <p className="booking-field-error" id="location-error">{errors.location}</p>}</div>
-          <div className="booking-field"><span className="booking-label">Pickup and return dates</span><DateRangePicker pickup={journey.pickup} returnDate={journey.returnDate} blocked={blocked} onChange={(pickup, returnDate) => { setJourney((current) => ({ ...current, pickup, returnDate })); setErrors((current) => ({ ...current, pickup: undefined, returnDate: undefined })); }} compact />{(errors.pickup || errors.returnDate) && <p className="booking-field-error" role="alert">{errors.pickup || errors.returnDate}</p>}</div>
+          <div className="booking-field"><span className="booking-label">Pickup and return dates</span><DateRangePicker pickup={journey.pickup} returnDate={journey.returnDate} onChange={(pickup, returnDate) => { setJourney((current) => ({ ...current, pickup, returnDate })); setErrors((current) => ({ ...current, pickup: undefined, returnDate: undefined })); }} compact />{(errors.pickup || errors.returnDate) && <p className="booking-field-error" role="alert">{errors.pickup || errors.returnDate}</p>}</div>
           <p className="booking-fine-print">Journeys can run for up to 28 calendar days.</p>
         </>}
         {step === 1 && <>
@@ -91,18 +81,13 @@ export function BookingWizard({ car, initialPickup, initialReturn, initialLocati
           <div className="booking-extras">{extrasCatalog.map((extra) => <label key={extra.id} className={`booking-extra${extras.includes(extra.id) ? ' is-selected' : ''}`}><input type="checkbox" checked={extras.includes(extra.id)} onChange={() => toggleExtra(extra.id)} /><span className="booking-extra-copy"><strong>{extra.name}</strong><small>{extra.description}</small></span><span className="booking-extra-price">+{naira(extra.dailyRate)}<small>per day</small></span></label>)}</div>
         </>}
         {step === 2 && <>
-          <div className="booking-section-head"><h2>Driver details.</h2><p>Add the details for the person who will drive.</p></div>
-          <div className="booking-driver-grid">
-            <div className="booking-field booking-field--wide"><label htmlFor="driver-name">Full name</label><input id="driver-name" autoComplete="name" value={driver.fullName} onChange={(event) => { setDriver((current) => ({ ...current, fullName: event.target.value })); setErrors((current) => ({ ...current, fullName: undefined })); }} aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? 'driver-name-error' : undefined} placeholder="First and last name" />{errors.fullName && <p id="driver-name-error" className="booking-field-error">{errors.fullName}</p>}</div>
-            <div className="booking-field"><label htmlFor="driver-email">Email address</label><input id="driver-email" type="email" autoComplete="email" value={driver.email} onChange={(event) => { setDriver((current) => ({ ...current, email: event.target.value })); setErrors((current) => ({ ...current, email: undefined })); }} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'driver-email-error' : undefined} placeholder="you@example.com" />{errors.email && <p id="driver-email-error" className="booking-field-error">{errors.email}</p>}</div>
-            <div className="booking-field"><label htmlFor="driver-phone">Phone number</label><input id="driver-phone" type="tel" autoComplete="tel" value={driver.phone} onChange={(event) => { setDriver((current) => ({ ...current, phone: event.target.value })); setErrors((current) => ({ ...current, phone: undefined })); }} aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? 'driver-phone-error' : undefined} placeholder="+44 7700 900000" />{errors.phone && <p id="driver-phone-error" className="booking-field-error">{errors.phone}</p>}</div>
-            <div className="booking-field booking-field--wide"><label htmlFor="driver-country">Licence issuing country</label><input id="driver-country" autoComplete="country-name" value={driver.licenceCountry} onChange={(event) => { setDriver((current) => ({ ...current, licenceCountry: event.target.value })); setErrors((current) => ({ ...current, licenceCountry: undefined })); }} aria-invalid={Boolean(errors.licenceCountry)} aria-describedby={errors.licenceCountry ? 'driver-country-error' : undefined} placeholder="e.g. Nigeria" />{errors.licenceCountry && <p id="driver-country-error" className="booking-field-error">{errors.licenceCountry}</p>}</div>
-          </div>
+          <div className="booking-section-head"><h2>Driver requirements.</h2><p>A rental operator will set its own driver eligibility and document checks before accepting real reservations. This planning flow does not need your identity or licence details.</p></div>
+          <p className="booking-fine-print">Do not enter personal or payment information in a journey plan.</p>
         </>}
         {step === 3 && <>
           <div className="booking-section-head"><h2>One last look.</h2><p>Check your route, dates and total before continuing.</p></div>
-          <dl className="booking-review"><div><dt>Car</dt><dd>{car.name}</dd></div><div><dt>Collection</dt><dd>{locationNames[journey.location] || '—'} · {formatDate(journey.pickup)}</dd></div><div><dt>Return</dt><dd>{locationNames[journey.location] || '—'} · {formatDate(journey.returnDate)}</dd></div><div><dt>Duration</dt><dd>{days} {days === 1 ? 'day' : 'days'}</dd></div><div><dt>Extras</dt><dd>{extras.length ? extrasCatalog.filter((extra) => extras.includes(extra.id)).map((extra) => extra.name).join(', ') : 'None'}</dd></div><div><dt>Driver</dt><dd>{driver.fullName}<br />{driver.email}</dd></div></dl>
-          <label className="booking-agreement"><input type="checkbox" checked={agreed} onChange={(event) => { setAgreed(event.target.checked); setErrors((current) => ({ ...current, agreement: undefined })); }} /><span>I have checked the journey details above.</span></label>{errors.agreement && <p className="booking-field-error" role="alert">{errors.agreement}</p>}
+          <dl className="booking-review"><div><dt>Car</dt><dd>{car.name}</dd></div><div><dt>Collection</dt><dd>{locationNames[journey.location] || '—'} · {formatDate(journey.pickup)}</dd></div><div><dt>Return</dt><dd>{locationNames[journey.location] || '—'} · {formatDate(journey.returnDate)}</dd></div><div><dt>Duration</dt><dd>{days} {days === 1 ? 'day' : 'days'}</dd></div><div><dt>Extras</dt><dd>{extras.length ? extrasCatalog.filter((extra) => extras.includes(extra.id)).map((extra) => extra.name).join(', ') : 'None'}</dd></div></dl>
+          <label className="booking-agreement"><input type="checkbox" checked={agreed} aria-invalid={Boolean(errors.agreement)} aria-describedby={errors.agreement ? 'agreement-error' : undefined} onChange={(event) => { setAgreed(event.target.checked); setErrors((current) => ({ ...current, agreement: undefined })); }} /><span>I understand this is a plan, not a reservation or payment, and I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">site terms</a>. I have read the <a href="/privacy" target="_blank" rel="noopener noreferrer">privacy notice</a>.</span></label>{errors.agreement && <p id="agreement-error" className="booking-field-error" role="alert">{errors.agreement}</p>}
         </>}
         <div className="booking-actions">{step > 0 && <button type="button" className="booking-back" onClick={() => { setErrors({}); setStep((current) => current - 1); }}>Back</button>}{step < 3 ? <button type="button" className="booking-next" onClick={next}>Continue to {steps[step + 1].toLowerCase()}</button> : <button type="button" className="booking-next" onClick={beginTestCheckout} disabled={pending}>{pending ? 'Opening checkout…' : 'Continue to checkout'}</button>}</div>
         {checkoutError && <p className="booking-checkout-error" role="alert">{checkoutError}</p>}

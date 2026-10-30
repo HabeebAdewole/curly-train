@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 
@@ -9,13 +10,15 @@ export default function PrivacyPage() {
     <SiteHeader dark={false} />
     <div className="privacy-wrap">
       <p className="booking-kicker">Rinjo / Privacy</p>
-      <h1>Your data, clearly.</h1>
-      <p>This page explains what happens to information you share while using Rinjo.</p>
+      <h1>How your data is used.</h1>
+      <p>Updated 30 October 2026. This notice describes the current site. It will be revised before a rental operator accepts real bookings through it.</p>
       <div className="privacy-sections">
-        <section><h2>Google sign-in</h2><p>When you sign in, Google provides your name, email address and profile image. Auth.js uses that information to establish your account session. Rinjo does not request access to your Google Drive, contacts or other Google data.</p></section>
-        <section><h2>Journey and profile details</h2><p>Search and booking steps use your chosen car, location and dates. The checkout route validates the driver details you enter, but the current journey planning flow does not create a stored reservation. Changes to the account journey examples and the phone number and licence country you save in your profile are kept in this browser tab&apos;s session storage.</p></section>
-        <section><h2>Payments</h2><p>The current checkout does not collect card details or charge you. If payment processing is added later, this page will be updated before that feature becomes available.</p></section>
-        <section><h2>Hosting</h2><p>Rinjo runs on Vercel. Standard request information, such as your IP address and browser details, may be processed by the hosting service to deliver the site. You can end your account session by signing out and clear locally saved journey and profile details by clearing this site&apos;s browser data.</p></section>
+        <section><h2>Who operates this site</h2><p>Rinjo is booking software in development. No rental operator has been onboarded. A responsible business identity and direct privacy contact must be published before customer data is collected for live bookings.</p></section>
+        <section><h2>Google sign-in</h2><p>Sign-in is optional for browsing. If you choose it, Google provides your name, email address and profile image to establish an Auth.js session. We do not request your Google contacts, Drive files or payment details. Google and the hosting provider process information needed for sign-in and delivery.</p></section>
+        <section><h2>Journey information</h2><p>Search choices and journey plans use a car, location, dates and selected extras. The current checkout does not create a reservation or take payment. Journey examples and edits are kept in this browser tab&apos;s session storage. Driver identity and licence details are not needed for this planning flow.</p></section>
+        <section><h2>Cookies and tracking</h2><p>Authentication may set cookies needed to keep a sign-in session and protect it. We found no advertising pixels, analytics scripts or third-party embeds in the application code. See the <Link href="/cookies">cookie policy</Link>. Optional tracking will need a separate choice before it is enabled.</p></section>
+        <section><h2>Hosting and retention</h2><p>Rinjo runs on Vercel, which may process standard request information such as IP address, browser details and access logs. Session storage is cleared when the browser session ends or you clear site data. Signing out ends your account session. A verified retention schedule is required before live bookings.</p></section>
+        <section><h2>Your choices and rights</h2><p>You can browse without signing in, sign out, and clear this site&apos;s browser data. Nigerian data protection law provides rights that may include access, correction, erasure and objection, depending on the circumstances. A direct privacy contact must be published before live bookings. You may also contact the <a href="https://ndpc.gov.ng/" rel="noreferrer">Nigeria Data Protection Commission</a>.</p></section>
       </div>
     </div>
     <SiteFooter />

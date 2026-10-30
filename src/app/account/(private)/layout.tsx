@@ -19,8 +19,8 @@ export default async function CustomerLayout({ children }: Readonly<{ children: 
       <div className="customer-heading"><p className="booking-kicker">Your Rinjo space</p><h1>The journey, considered.</h1><p>Welcome, {session.user.name || 'driver'}.</p></div>
       <div className="customer-layout">
         <nav className="customer-nav" aria-label="Customer account">
-          <Link href="/account/bookings">My bookings</Link>
-          <Link href="/account/profile">Profile & driver details</Link>
+          <Link href="/account/bookings">Journey plans</Link>
+          <Link href="/account/profile">Profile</Link>
           <CustomerSignOut email={session.user.email} />
         </nav>
         <div className="customer-content">{children}</div>
