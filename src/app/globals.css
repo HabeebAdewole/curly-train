@@ -494,6 +494,7 @@ a { text-decoration: none; }
 .customer-nav a:hover, .customer-nav button:hover { color: #446a4e; }
 .customer-nav > p { margin: 25px 0 0; color: #728174; font-size: 12px; line-height: 1.6; }
 .customer-content { min-width: 0; }
+.customer-requests { margin-bottom: clamp(56px, 8vw, 100px); }
 .customer-section-heading { max-width: 780px; margin-bottom: 39px; }
 .customer-section-heading h2 { margin: 14px 0 14px; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(42px, 4.8vw, 70px); font-weight: 600; line-height: 1.04; letter-spacing: -.07em; }
 .customer-section-heading > p:last-child { max-width: 600px; margin: 0; color: #607165; font-size: 16px; line-height: 1.6; }
@@ -502,12 +503,14 @@ a { text-decoration: none; }
 .customer-filters button.is-active { border-bottom-color: var(--ink); color: var(--ink); }
 .customer-booking-list { border-top: 1px solid #aab9ac; }
 .customer-booking-row { display: grid; grid-template-columns: minmax(145px, .28fr) minmax(0, 1fr) auto; gap: clamp(20px, 3vw, 45px); align-items: center; padding: 25px 0; border-bottom: 1px solid #aab9ac; }
+.customer-request-row { grid-template-columns: minmax(0, 1fr) auto; }
 .customer-booking-photo { position: relative; aspect-ratio: 1.4; overflow: hidden; border-radius: 13px; background: #d4dcd4; }
 .customer-booking-photo img { object-fit: cover; }
 .customer-booking-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; color: #6f806f; font-size: 10px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
 .customer-status { color: #486a4d; }
 .customer-status--completed { color: #6e786e; }
 .customer-status--cancelled { color: #a15b4b; }
+.customer-status--declined { color: #a15b4b; }
 .customer-booking-details h3 { margin: 10px 0 8px; font-family: var(--font-manrope), Arial, sans-serif; font-size: clamp(23px, 2.3vw, 33px); font-weight: 650; letter-spacing: -.055em; }
 .customer-booking-details p { margin: 0 0 14px; color: #5f7063; font-size: 13px; line-height: 1.5; }
 .customer-booking-details > strong { font-family: var(--font-manrope), Arial, sans-serif; font-size: 20px; letter-spacing: -.05em; }
@@ -566,8 +569,10 @@ a { text-decoration: none; }
   .customer-heading { margin-bottom: 48px; }
   .customer-heading h1 { font-size: clamp(52px, 11vw, 70px); }
   .customer-booking-row { grid-template-columns: 105px minmax(0, 1fr); gap: 16px; }
+  .customer-request-row { grid-template-columns: minmax(0, 1fr); }
   .customer-booking-photo { align-self: start; }
   .customer-booking-link { grid-column: 2; justify-self: start; }
+  .customer-request-row .customer-booking-link { grid-column: 1; }
   .customer-booking-details h3 { font-size: 23px; }
   .customer-booking-details p { font-size: 12px; }
   .header-end { gap: 13px; }

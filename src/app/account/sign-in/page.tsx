@@ -10,9 +10,11 @@ import { authReady } from '@/lib/auth-ready';
 export const metadata: Metadata = { title: 'Your account — Rinjo' };
 export const dynamic = 'force-dynamic';
 
-export default async function SignInPage() {
+export default async function SignInPage({ searchParams }: { searchParams: Promise<{ callbackUrl?: string }> }) {
+  const requested = (await searchParams).callbackUrl;
+  const destination = requested && requested.length < 160 && /^\/pilot\/[a-z0-9/-]+$/.test(requested) ? requested : '/account/bookings';
   const ready = authReady();
-  if (ready && (await auth())?.user) redirect('/account/bookings');
+  if (ready && (await auth())?.user) redirect(destination);
 
   return <main className="account-page" id="top">
     <SiteHeader dark={false} />
@@ -23,10 +25,9 @@ export default async function SignInPage() {
         <p className="account-entry-intro">Your cars and journey plans, ready when you are.</p>
         {ready ? <form action={async () => {
           'use server';
-          await signIn('google', { redirectTo: '/account/bookings' });
-        }}><button type="submit" className="booking-next account-entry-submit"><span className="google-mark" aria-hidden="true">G</span>Continue with Google</button></form> : <div className="account-entry-unavailable" role="status"><button type="button" className="booking-next account-entry-submit" disabled><span className="google-mark" aria-hidden="true">G</span>Continue with Google</button><p>Sign-in is temporarily unavailable here.</p></div>}
-        <Link className="account-entry-return" href="/cars">Browse the cars</Link>
-        <p className="account-entry-privacy">Google provides your basic profile details for sign-in. Browsing needs no account. <Link href="/privacy">How we use your data</Link></p>
+          await signIn('google', { redirectTo: destination });
+        }}><button type="submit" className="booking-next account-entry-submit">Continue with Google</button></form> : <div className="account-setup-note" role="status"><strong>Sign-in is temporarily unavailable.</strong><p>Please come back shortly. You can still explore the collection.</p></div>}
+        <Link className="account-entry-return" href="/cars">Explore the cars</Link>
       </section>
       <figure className="account-entry-visual">
         <div className="account-art-disc" aria-hidden="true" />
