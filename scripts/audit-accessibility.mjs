@@ -2,8 +2,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { chromium } from 'playwright';
 
 const baseUrl = process.env.AUDIT_BASE_URL || 'http://localhost:3000';
-const routes = ['/', '/cars', '/cars/mercedes-s-class', '/book/mercedes-s-class', '/account/sign-in', '/privacy', '/terms', '/cookies', '/refunds'];
-const mobileRoutes = ['/', '/cars', '/book/mercedes-s-class', '/privacy', '/terms'];
+const routes = ['/', '/cars', '/cars/mercedes-s-class', '/book/mercedes-s-class', '/account/sign-in', '/pilot', '/pilot/local-test-suv', '/privacy', '/terms', '/cookies', '/refunds'];
+const mobileRoutes = ['/', '/cars', '/book/mercedes-s-class', '/pilot', '/pilot/local-test-suv', '/privacy', '/terms'];
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 let violationCount = 0;
 
