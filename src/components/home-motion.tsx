@@ -18,9 +18,7 @@ export function HomeMotion() {
     let frame = 0;
     const update = () => {
       frame = 0;
-      const progress = Math.min(1, window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight));
-      document.documentElement.style.setProperty('--route-progress', `${progress * 100}%`);
-      document.documentElement.style.setProperty('--hero-drift', `${Math.min(window.scrollY, window.innerHeight) * .18}px`);
+      document.documentElement.style.setProperty('--hero-drift', `${Math.min(window.scrollY, window.innerHeight) * .12}px`);
     };
     const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(update); };
     update();
@@ -29,7 +27,6 @@ export function HomeMotion() {
       observer.disconnect();
       window.removeEventListener('scroll', onScroll);
       if (frame) window.cancelAnimationFrame(frame);
-      document.documentElement.style.removeProperty('--route-progress');
       document.documentElement.style.removeProperty('--hero-drift');
       document.documentElement.classList.remove('rinjo-motion-ready');
     };

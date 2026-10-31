@@ -20,17 +20,23 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
     <SiteHeader dark={false} />
     <div className="account-entry-layout">
       <section className="account-entry-main">
-        <p className="booking-kicker">Your Rinjo space</p>
-        <h1>The road ahead, all in one place.</h1>
-        <p className="account-entry-intro">Sign in with Google to explore your Rinjo space.</p>
-        <p className="booking-fine-print">Sign-in is optional for browsing. Google shares basic profile information for your session. Read our <Link href="/privacy">privacy notice</Link> before continuing.</p>
+        <p className="booking-kicker">YOUR RINJO SPACE</p>
+        <h1>Pick up where<br />you left off.</h1>
+        <p className="account-entry-intro">Your cars and journey plans, ready when you are.</p>
         {ready ? <form action={async () => {
           'use server';
           await signIn('google', { redirectTo: destination });
         }}><button type="submit" className="booking-next account-entry-submit">Continue with Google</button></form> : <div className="account-setup-note" role="status"><strong>Sign-in is temporarily unavailable.</strong><p>Please come back shortly. You can still explore the collection.</p></div>}
         <Link className="account-entry-return" href="/cars">Explore the cars</Link>
       </section>
-      <figure className="account-entry-visual"><Image src="/media/mercedes-s-class.webp" alt="Graphite Mercedes-Benz S-Class against a pale backdrop" fill sizes="(max-width: 900px) 100vw, 48vw" /><figcaption><span>01 / YOUR JOURNEYS</span><strong>Good to have the details in one place.</strong></figcaption></figure>
+      <figure className="account-entry-visual">
+        <div className="account-art-disc" aria-hidden="true" />
+        <svg className="account-art-route" viewBox="0 0 620 590" fill="none" aria-hidden="true"><path d="M78 445C140 400 111 286 204 280C282 276 290 387 384 335C473 286 418 147 542 112" stroke="#315343" strokeWidth="2" strokeDasharray="7 8" /><circle cx="78" cy="445" r="8" fill="#18372A" stroke="#EAF2E9" strokeWidth="4" /><circle cx="542" cy="112" r="8" fill="#18372A" stroke="#EAF2E9" strokeWidth="4" /></svg>
+        <span className="account-art-label account-art-label--top" aria-hidden="true"><small>01 / KEEP THE PLAN</small><strong>ONE PLACE.<br />EVERY JOURNEY.</strong></span>
+        <div className="account-art-car"><Image src="/media/mercedes-s-class.webp" alt="Graphite Mercedes-Benz S-Class on a pale studio backdrop" width={1400} height={933} sizes="(max-width: 900px) 100vw, 52vw" priority /></div>
+        <span className="account-art-label account-art-label--bottom" aria-hidden="true"><span className="account-art-point" /> LAGOS · ABUJA</span>
+        <figcaption>Make the next drive easier to find.</figcaption>
+      </figure>
     </div>
     <SiteFooter />
   </main>;
