@@ -10,9 +10,11 @@ import { authReady } from '@/lib/auth-ready';
 export const metadata: Metadata = { title: 'Your account — Rinjo' };
 export const dynamic = 'force-dynamic';
 
-export default async function SignInPage() {
+export default async function SignInPage({ searchParams }: { searchParams: Promise<{ callbackUrl?: string }> }) {
+  const requested = (await searchParams).callbackUrl;
+  const destination = requested && requested.length < 160 && /^\/pilot\/[a-z0-9/-]+$/.test(requested) ? requested : '/account/bookings';
   const ready = authReady();
-  if (ready && (await auth())?.user) redirect('/account/bookings');
+  if (ready && (await auth())?.user) redirect(destination);
 
   return <main className="account-page" id="top">
     <SiteHeader dark={false} />
@@ -24,7 +26,7 @@ export default async function SignInPage() {
         <p className="booking-fine-print">Sign-in is optional for browsing. Google shares basic profile information for your session. Read our <Link href="/privacy">privacy notice</Link> before continuing.</p>
         {ready ? <form action={async () => {
           'use server';
-          await signIn('google', { redirectTo: '/account/bookings' });
+          await signIn('google', { redirectTo: destination });
         }}><button type="submit" className="booking-next account-entry-submit">Continue with Google</button></form> : <div className="account-setup-note" role="status"><strong>Sign-in is temporarily unavailable.</strong><p>Please come back shortly. You can still explore the collection.</p></div>}
         <Link className="account-entry-return" href="/cars">Explore the cars</Link>
       </section>
