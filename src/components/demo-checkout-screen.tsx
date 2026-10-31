@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
 import { calculateQuote, naira } from '@/lib/booking';
-import { demoCheckoutKey, demoCheckoutSnapshot, parseDemoCheckout, subscribeDemoCheckout, type DemoCheckout } from '@/lib/demo-checkout';
+import { demoCheckoutKey, demoCheckoutSnapshot, parseDemoCheckout, saveCompletedPlan, subscribeDemoCheckout, type DemoCheckout } from '@/lib/demo-checkout';
 import { formatDate } from '@/lib/dates';
 import { locationNames } from '@/lib/locations';
 
@@ -21,7 +21,9 @@ export function DemoCheckoutScreen() {
 
   function complete() {
     if (!checkout) return;
-    sessionStorage.setItem(demoCheckoutKey, JSON.stringify({ ...checkout, status: 'completed' } satisfies DemoCheckout));
+    const completed = { ...checkout, status: 'completed' } satisfies DemoCheckout;
+    sessionStorage.setItem(demoCheckoutKey, JSON.stringify(completed));
+    saveCompletedPlan(completed);
     router.push(`/booking/confirmation?plan=${encodeURIComponent(checkout.reference)}`);
   }
 
