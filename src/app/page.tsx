@@ -6,20 +6,24 @@ import { MotionVideo } from '@/components/motion-video';
 import { SearchForm } from '@/components/search-form';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { HomeMotion } from '@/components/home-motion';
 
 export default function Home() {
   return (
     <main id="top">
+      <HomeMotion />
+      <div className="route-rail" aria-hidden="true"><span /></div>
       <section className="home-hero" aria-labelledby="hero-title">
         <div className="hero-photo" aria-hidden="true" />
         <div className="hero-shade" aria-hidden="true" />
+        <div className="hero-route" aria-hidden="true"><span className="hero-route-label">LAGOS <i /> ABUJA</span><span className="hero-route-track"><i /></span><span className="hero-route-end">YOUR JOURNEY STARTS HERE</span></div>
         <SiteHeader />
         <div className="hero-message">
-          <h1 id="hero-title">Drive beyond<br />the expected.</h1>
+          <h1 id="hero-title"><span className="hero-title-line"><span>Drive beyond</span></span><span className="hero-title-line"><span>the expected.</span></span></h1>
           <p>Explore how a considered rental journey could work across Lagos and Abuja. Vehicles and rates are illustrative while the operator platform is in development.</p>
           <div className="hero-actions">
-            <Link className="pill pill--filled" href="#cars">Explore the cars</Link>
-            <Link className="pill pill--outline" href="#how-it-works">How it works</Link>
+            <Link className="pill pill--filled" href="#search">Choose your dates</Link>
+            <Link className="pill pill--text" href="#cars">Explore the cars</Link>
           </div>
         </div>
         <SearchForm />
@@ -53,7 +57,7 @@ export default function Home() {
           <li><span className="process-number">02</span><h3>Make your choice.</h3><p>Compare cars and review an illustrative price before saving a plan.</p></li>
           <li><span className="process-number">03</span><h3>Keep the plan.</h3><p>Review the route and dates you chose. No vehicle is reserved yet.</p></li>
         </ol>
-        <Link className="underlined-link" href="#search">Start with your dates</Link>
+        <Link className="pill pill--dark process-action" href="#search">Choose your dates</Link>
       </section>
 
       <section className="film-section" id="approach" aria-label="The Rinjo driving experience">
@@ -64,7 +68,7 @@ export default function Home() {
         <h2>A good journey begins before you turn the key.</h2>
         <div>
           <p>Choose a car, set your dates and explore the planning flow. Real rental terms will come from each participating operator.</p>
-          <Link className="pill pill--outline" href="#search">Find your car</Link>
+          <Link className="pill pill--filled" href="#search">Plan a drive</Link>
         </div>
       </section>
       <SiteFooter />
