@@ -36,7 +36,7 @@ export function CollectionGallery() {
               <Image src={car.image} alt={car.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw" style={{ objectPosition: car.position }} />
               <span className="collection-image-tag">{car.category}</span>
             </Link>
-            <div className="collection-car-copy"><div><span>{car.brand}</span><h3>{car.name}</h3></div><Link href={`/cars/${car.id}`} aria-label={`Explore ${car.name}`} className="collection-car-link">Explore</Link></div>
+            <div className="collection-car-copy"><div><span>{car.brand}</span><h3>{car.name}</h3></div><Link href={`/cars/${car.id}`} aria-label={`View ${car.name}`} className="collection-car-link">View car</Link></div>
           </article>
         ))}
       </div>
