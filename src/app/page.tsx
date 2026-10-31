@@ -12,14 +12,12 @@ export default function Home() {
   return (
     <main id="top">
       <HomeMotion />
-      <div className="route-rail" aria-hidden="true"><span /></div>
       <section className="home-hero" aria-labelledby="hero-title">
         <div className="hero-photo" aria-hidden="true" />
         <div className="hero-shade" aria-hidden="true" />
-        <div className="hero-route" aria-hidden="true"><span className="hero-route-label">LAGOS <i /> ABUJA</span><span className="hero-route-track"><i /></span><span className="hero-route-end">YOUR JOURNEY STARTS HERE</span></div>
         <SiteHeader />
         <div className="hero-message">
-          <h1 id="hero-title"><span className="hero-title-line"><span>Drive beyond</span></span><span className="hero-title-line"><span>the expected.</span></span></h1>
+          <h1 id="hero-title">Drive beyond<br />the expected.</h1>
           <p>Explore how a considered rental journey could work across Lagos and Abuja. Vehicles and rates are illustrative while the operator platform is in development.</p>
           <div className="hero-actions">
             <Link className="pill pill--filled" href="#search">Choose your dates</Link>
